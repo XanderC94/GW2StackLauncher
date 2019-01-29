@@ -1,0 +1,3 @@
+rootProject.name = 'GW2StackLauncher'
+
+gradle.ext.jarDirPath = rootProject.projectDir.toString() + "/bin/"

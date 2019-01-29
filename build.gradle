@@ -1,0 +1,53 @@
+//import java.util.logging.Level
+
+buildscript {
+
+    ext.kotlin_version = '1.3.20'
+    ext.slf4j_version = '1.7.25'
+    ext.gson_version = '2.8.5'
+    ext.rxkotlin_version = '2.3.0'
+    ext.tornado_fx_version = '1.7.17'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+
+group 'GW2StackLauncher'
+version '0.0.1'
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+//    main.kotlin.testDirs += 'src/test/kotlin'
+    main.java.srcDirs += 'src/main/kotlin'
+//    main.java.testDirs += 'src/test/kotlin'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+
+    // utility
+    compile "org.slf4j:slf4j-simple:$slf4j_version"
+    compile "com.google.code.gson:gson:$gson_version"
+    compile "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
+    compile "no.tornado:tornadofx:$tornado_fx_version"
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    // test
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
+}
