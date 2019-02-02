@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
 
     val workspace = System.getProperty("user.dir").replace('\\', '/')
 
-    val logger = Logger.instance();
+    val logger = Logger.instance()
 
     logger.info(workspace)
 
@@ -37,6 +37,8 @@ fun main(args: Array<String>) {
     }
 
     val gw2OptionList = CommandLineOptionsParser.parse(config.argumentsListPath)
+
+    Logger.instance().info(gw2OptionList.arguments.map { it.name }.toString())
 
     val gw2UserDir = SystemUtils.GW2UserDirectory()!!.replace('\\', '/')
     val gw2UserSettingsPath = Paths.get("$gw2UserDir/${Nomenclatures.GW2SettingsJsonName}")
@@ -74,5 +76,4 @@ fun main(args: Array<String>) {
         GenericJsonDumper.dump(GW2LocalSettings(newSettings), gw2UserSettingsPath)
 
     }
-
 }
