@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.TextFlow?>
+<BorderPane id="GW2SLMainPane" fx:id="GW2SLMainPane" minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <FlowPane id="GW2SLRunPane" fx:id="GW2SLRunPane" alignment="TOP_CENTER" hgap="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <FlowPane id="GW2LocationPane" fx:id="GW2LocationPane" hgap="10.0">
+               <children>
+                  <Label id="GW2LocationLabel" fx:id="GW2LocationLabel" text="Guild Wars 2 Location:" />
+                  <TextField id="GW2LocationField" fx:id="GW2LocationField" />
+               </children>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </FlowPane>
+            <Button id="RunGW2Button" fx:id="RunGW2Button" mnemonicParsing="false" text="Run Guild Wars 2" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+         </padding>
+      </FlowPane>
+   </bottom>
+   <center>
+      <TabPane id="GW2SLTabPane" fx:id="GW2SLTabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab closable="false" text="Overview">
+               <content>
+                  <AnchorPane id="OverviewTab" fx:id="OverviewTab">
+                     <children>
+                        <SplitPane dividerPositions="0.5" layoutX="162.0" layoutY="86.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                          <items>
+                            <AnchorPane>
+                                 <children>
+                                    <ListView id="ActiveOptionsListOverView" fx:id="ActiveOptionsListOverView" layoutY="78.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane>
+                                 <children>
+                                    <ListView id="ActiveAddOnsListOverView" fx:id="ActiveAddOnsListOverView" layoutX="40.0" layoutY="68.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Options">
+               <content>
+                  <AnchorPane id="OptionsTab" fx:id="OptionsTab">
+                     <children>
+                        <SplitPane dividerPositions="0.3" layoutX="135.0" layoutY="80.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <items>
+                              <AnchorPane>
+                                 <children>
+                                    <ListView id="OptionsListView" fx:id="OptionsListView" layoutX="-31.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane id="ItemPaneAnchor" fx:id="OptionItemPaneAnchor">
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding>
+                                 <children>
+                                    <BorderPane id="ItemPane" fx:id="OptionsItemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <top>
+                                          <FlowPane id="ItemPaneHeader" fx:id="OptionPaneHeader" alignment="BASELINE_LEFT" hgap="30.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <FlowPane id="ItemValuePane" fx:id="OptionValuePane" alignment="BASELINE_LEFT" hgap="10.0">
+                                                   <children>
+                                                      <Label id="ItemValueLabel" fx:id="OptionValueLabel" text="Value:" />
+                                                      <TextField id="ItemValueField" fx:id="OptionValueField" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </FlowPane>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                             </padding>
+                                             <BorderPane.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </BorderPane.margin>
+                                          </FlowPane>
+                                       </top>
+                                       <center>
+                                          <TextArea id="OptionDescriptionArea" fx:id="OptionDescriptionArea" editable="false" prefHeight="200.0" wrapText="true" BorderPane.alignment="CENTER">
+                                             <padding>
+                                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                             </padding>
+                                          </TextArea>
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="AddOns">
+               <content>
+                  <AnchorPane id="AddOnsTab" fx:id="AddOnsTab">
+                     <children>
+                        <SplitPane dividerPositions="0.29797979797979796" layoutX="112.0" layoutY="60.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <items>
+                              <AnchorPane>
+                                 <children>
+                                    <ListView id="AddOnsListView" fx:id="AddOnsListView" layoutX="-15.0" layoutY="46.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="AddOnsItemPaneAnchor">
+                                 <children>
+                                    <BorderPane id="ItemPane" fx:id="AddOnsItemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <center>
+                                          <TextFlow id="ItemDescriptionPane" fx:id="ItemDescriptionPane1" lineSpacing="1.1" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                             <BorderPane.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </BorderPane.margin>
+                                          </TextFlow>
+                                       </center>
+                                       <top>
+                                          <FlowPane id="ItemPaneHeader" fx:id="AddOnsItemPaneHeader" alignment="BASELINE_LEFT" hgap="30.0" BorderPane.alignment="CENTER">
+                                             <padding>
+                                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                             </padding>
+                                             <BorderPane.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </BorderPane.margin>
+                                          </FlowPane>
+                                       </top>
+                                    </BorderPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding></AnchorPane>
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="About">
+               <content>
+                  <AnchorPane id="AboutTab" fx:id="AboutTab">
+                     <children>
+                        <BorderPane fx:id="AboutPane" layoutX="163.0" layoutY="124.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <center>
+                              <TextFlow id="AboutGW2SL" fx:id="AboutGW2SL" BorderPane.alignment="CENTER" />
+                           </center>
+                           <top>
+                              <TextFlow id="AboutDeveloper" fx:id="AboutDeveloper" BorderPane.alignment="CENTER" />
+                           </top>
+                           <bottom>
+                              <TextFlow id="AboutRepository" fx:id="AboutRepository" BorderPane.alignment="CENTER" />
+                           </bottom>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </TabPane>
+   </center>
+</BorderPane>

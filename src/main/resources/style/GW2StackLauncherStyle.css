@@ -1,0 +1,148 @@
+/** BUTTON *******************************************************************/
+
+.button {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #cccccc;
+    -fx-border-color: null;
+}
+
+.button:hover {
+    -fx-background-color: darkred;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+/** TOGGLE-BUTTON *******************************************************************/
+
+.toggle-button {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: salmon;
+    -fx-border-color: null;
+}
+
+.toggle-button:selected {
+    -fx-background-color: lightgreen;
+}
+
+.toggle-button:hover {
+    -fx-background-color: darkred;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+.toggle-button:selected:hover {
+    -fx-background-color: darkgreen;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+/** SCROLL-BAR *******************************************************************/
+
+.scroll-bar {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #cccccc;
+    -fx-border-color: null;
+}
+
+/** TEXT-FIELD *******************************************************************/
+
+.text-field {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-border-color: #cccccc;
+}
+
+/** TEXT-AREA *******************************************************************/
+
+.text-area {
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-color: transparent, #f1f1f1, transparent, #f1f1f1;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-border-color: none;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: mediumblue;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, #f1f1f1, transparent, #f1f1f1;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent, #f1f1f1, transparent, #f1f1f1;
+}
+
+/** SPLIT-PANE *******************************************************************/
+
+.split-pane {
+    -fx-border-radius: 0;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: transparent;
+    -fx-border-color: null;
+    -fx-border-radius: 0;
+}
+
+/** TAB-PANE *******************************************************************/
+
+.tab-pane {
+    -fx-skin: "com.sun.javafx.scene.control.skin.TabPaneSkin";
+    -fx-tab-min-height: 2em; 
+    -fx-tab-max-height: 2em;
+}
+
+.tab .tab-label {
+    -fx-skin: "com.sun.javafx.scene.control.skin.LabelSkin";
+    -fx-alignment: CENTER;
+}
+
+.tab {
+    -fx-background-color: #818181;
+    -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-border-color: #818181
+}
+
+.tab:selected {
+    -fx-background-color: white;
+    -fx-border-color: white;
+}
+
+.tab-header-background {
+    -fx-background-color: #333;
+}
+
+/** LIST-VIEW *******************************************************************/
+
+.list-view {
+    -fx-background-insets: 0;
+}
+
+.list-view:focused {
+    -fx-border-color: transparent;
+}
+
+.list-cell:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: lightblue;
+    -fx-border-width: 2.0;
+    -fx-text-fill: black;
+    -fx-highlight-text-fill: black;
+    -fx-background-insets: 0;
+}
+.list-cell:selected > * {
+    -fx-text-fill: black;
+    -fx-highlight-text-fill: black;
+    -fx-background-insets: 0;
+}
+
+.list-cell:selected > * > .label {
+    -fx-text-fill: black;
+    -fx-highlight-text-fill: black;
+    -fx-background-insets: 0;
+}
