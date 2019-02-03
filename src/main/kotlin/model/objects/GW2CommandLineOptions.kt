@@ -1,4 +1,4 @@
-package model.json.objects
+package model.objects
 
 /**
  * POJO representation of the container holding all the GW2 Command Line Arguments

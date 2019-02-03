@@ -1,4 +1,4 @@
-package model.json.objects
+package model.objects
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -19,11 +19,11 @@ data class GW2StackLauncherConfig(
                                  typeOfT: Type?,
                                  context: JsonDeserializationContext?): GW2StackLauncherConfig {
 
-            val jsonObject = json?.asJsonObject
+            val jsonObject = json?.asJsonObject!!
 
             return GW2StackLauncherConfig(
-                    Paths.get(jsonObject?.get("argumentsListPath")?.asString),
-                    URL(jsonObject?.get("addonsListURL")?.asString)
+                    Paths.get(jsonObject["argumentsListPath"].asString),
+                    URL(jsonObject["addonsListURL"].asString)
             )
         }
 

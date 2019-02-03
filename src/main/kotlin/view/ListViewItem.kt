@@ -21,8 +21,6 @@ class ListViewItem(val toggle: (String, Boolean) -> Unit) : ListCell<Pair<String
         paddingAll = 5.0
     }
 
-
-
     override fun updateItem(item: Pair<String, Boolean>?, empty: Boolean) {
         super.updateItem(item, empty)
         if (!empty) {

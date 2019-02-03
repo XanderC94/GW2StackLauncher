@@ -1,25 +1,26 @@
-package model.json.parser
+package model
 
 import java.io.File
+import java.nio.charset.Charset
 import java.nio.file.Path
 
-interface JsonParser<T> {
+interface Parser<T> {
 
     /**
      * Parse the String representation of <T> and return its POJO representation
      *
-     * @param json The String representation of <T>
+     * @param rep The String representation of <T>
      * @return The POJO representation of <T>
      */
-    fun parse(json: String) : T
+    fun parse(rep: String) : T
 
     /**
      * Parse the file containing the String representation of <T> and return its POJO representation
      *
-     * @param jsonFile The file containing the String representation of <T>
+     * @param file The file containing the String representation of <T>
      * @return The POJO representation of <T>
      */
-    fun parse(jsonFile: File) : T
+    fun parse(file: File, charset: Charset): T
 
     /**
      * Load the file containing the String representation of @param <T> at the specified Path
@@ -29,6 +30,6 @@ interface JsonParser<T> {
      * @return The POJO representation of <T>
      *
      */
-    fun parse(path: Path) : T
+    fun parse(path: Path, charset: Charset): T
 
 }

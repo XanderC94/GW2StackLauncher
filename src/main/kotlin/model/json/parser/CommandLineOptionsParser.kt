@@ -1,8 +1,10 @@
 package model.json.parser
 
 import com.google.gson.GsonBuilder
-import model.json.objects.GW2CommandLineOptions
+import model.Parser
+import model.objects.GW2CommandLineOptions
 import java.io.File
+import java.nio.charset.Charset
 import java.nio.file.Path
 
 /**
@@ -10,23 +12,23 @@ import java.nio.file.Path
  * and create its POJO representation GW2CommandLineOptions.
  *
  */
-object CommandLineOptionsParser : JsonParser<GW2CommandLineOptions> {
+object CommandLineOptionsParser : Parser<GW2CommandLineOptions> {
 
     private val gson = GsonBuilder().create()
 
-    override fun parse(json: String) : GW2CommandLineOptions {
+    override fun parse(rep: String) : GW2CommandLineOptions {
 
         val type = GW2CommandLineOptions::class.java
 
-        return gson.fromJson(json, type)
+        return gson.fromJson(rep, type)
     }
 
-    override fun parse(jsonFile: File) : GW2CommandLineOptions {
-        return parse(jsonFile.readText(Charsets.UTF_8))
+    override fun parse(file: File, charset: Charset): GW2CommandLineOptions {
+        return parse(file.readText(charset))
     }
 
-    override fun parse(path: Path) : GW2CommandLineOptions {
-        return parse(path.toFile())
+    override fun parse(path: Path, charset: Charset): GW2CommandLineOptions {
+        return parse(path.toFile(), charset)
     }
 
 }

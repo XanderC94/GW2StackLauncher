@@ -3,21 +3,18 @@ package controller
 import events.OptionsEvent
 import events.OptionsRequest
 import model.json.dumper.GenericJsonDumper
-import model.json.objects.GW2Argument
-import model.json.objects.GW2CommandLineOptions
-import model.json.objects.GW2LocalSettings
-import model.json.objects.GW2StackLauncherConfig
+import model.objects.Application
+import model.objects.GW2Argument
+import model.objects.GW2CommandLineOptions
+import model.objects.GW2LocalSettings
 import model.utils.Nomenclatures
-import model.utils.SystemUtils
 import tornadofx.*
 import java.nio.file.Paths
 
 class OptionsController : Controller() {
 
     private var optionsLists: Map<String, GW2Argument> = mapOf()
-
-    private lateinit var appConfig: GW2StackLauncherConfig
-
+    private lateinit var gw2: Application
     init {
 
         subscribe<OptionsRequest.UpdateAvailableOptionsList>{
@@ -54,14 +51,14 @@ class OptionsController : Controller() {
 
         subscribe<OptionsRequest.SaveOptionsSettings> {
 
-            val gw2UserDir = SystemUtils.GW2UserDirectory()!!.replace('\\', '/')
+            val gw2UserDir = gw2.configPath.value.replace('\\', '/')
             val gw2LocalSettingsPath = Paths.get("$gw2UserDir/${Nomenclatures.GW2SettingsJsonName}")
 
             val activeOptionsAsList = optionsLists.values.filter { it.isActive }.map {
                 if (it.hasValue) "${it.name}:${it.value}" else it.name
             }.toList()
 
-            GenericJsonDumper.dump(GW2LocalSettings(activeOptionsAsList), gw2LocalSettingsPath)
+            GenericJsonDumper.dump(GW2LocalSettings(activeOptionsAsList), gw2LocalSettingsPath, Charsets.UTF_8)
         }
     }
 
@@ -85,8 +82,11 @@ class OptionsController : Controller() {
             if (optionsLists[it.first]!!.hasValue) {
                 optionsLists[it.first]!!.value = it.second
             }
-
         }
+    }
+
+    fun setGWApplication(gw2: Application) {
+        this.gw2 = gw2
     }
 
 }

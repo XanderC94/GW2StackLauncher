@@ -8,7 +8,9 @@ buildscript {
     ext.rxkotlin_version = '2.3.0'
     ext.tornado_fx_version = '1.7.17'
     ext.log4j_version = '1.2.17'
-    
+    ext.jackson_xml_version = '2.9.8'
+    ext.json_org_version = '20180813'
+    ext.apachi_commons_lang_version = '3.4'
     repositories {
         mavenCentral()
     }
@@ -42,9 +44,12 @@ dependencies {
     compile "org.slf4j:slf4j-api:$slf4j_version"
     compile "org.slf4j:slf4j-simple:$slf4j_version"
     compile "com.google.code.gson:gson:$gson_version"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jackson_xml_version"
+//    compile "org.json:json:$json_org_version"
 //    compile "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
     compile "no.tornado:tornadofx:$tornado_fx_version"
-    //kotlin
+//    compile "org.apache.commons:commons-lang3:$apachi_commons_lang_version"
+    
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 

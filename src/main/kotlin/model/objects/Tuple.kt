@@ -1,4 +1,4 @@
-package model.json.objects
+package model.objects
 
 class Tuple(vararg val values: Any) {
 

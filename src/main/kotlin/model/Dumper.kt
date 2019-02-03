@@ -1,8 +1,9 @@
-package model.json.dumper
+package model
 
+import java.nio.charset.Charset
 import java.nio.file.Path
 
-interface JsonDumper<T> {
+interface Dumper<T> {
 
     /**
      * Dump the POJO representation of <T> and return its String representation
@@ -19,6 +20,6 @@ interface JsonDumper<T> {
      * @param path The Path where the file is to be dumped
      *
      */
-    fun dump(obj: T, path: Path)
+    fun dump(obj: T, path: Path, charset: Charset)
 
 }

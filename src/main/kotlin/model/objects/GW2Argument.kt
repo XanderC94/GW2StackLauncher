@@ -1,4 +1,4 @@
-package model.json.objects
+package model.objects
 
 /**
  * POJO representation of a single command line argument
