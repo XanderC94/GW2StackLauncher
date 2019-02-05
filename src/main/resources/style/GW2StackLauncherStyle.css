@@ -13,6 +13,12 @@
     -fx-cursor: hand;
 }
 
+.button:pressed {
+    -fx-background-color: salmon;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+}
+
 /** TOGGLE-BUTTON *******************************************************************/
 
 .toggle-button {
@@ -59,7 +65,7 @@
 
 .text-area {
     -fx-background-insets: 0, 0, 0;
-    -fx-background-color: transparent, #f1f1f1, transparent, #f1f1f1;
+    -fx-background-color: transparent, #f5f5f5, transparent, #f5f5f5;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-border-color: none;
@@ -70,11 +76,11 @@
 }
 
 .text-area .content {
-    -fx-background-color: transparent, #f1f1f1, transparent, #f1f1f1;
+    -fx-background-color: transparent, #f5f5f5, transparent, #f5f5f5;
 }
 
 .text-area:focused .content {
-    -fx-background-color: transparent, #f1f1f1, transparent, #f1f1f1;
+    -fx-background-color: transparent, #f5f5f5, transparent, #f5f5f5;
 }
 
 /** SPLIT-PANE *******************************************************************/
@@ -145,4 +151,19 @@
     -fx-text-fill: black;
     -fx-highlight-text-fill: black;
     -fx-background-insets: 0;
+}
+
+/** CHOICE-BOX *******************************************************************/
+
+.choice-box {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #cccccc;
+    -fx-border-color: null;
+}
+
+.menu-item:focused {
+    -fx-background-color: darkred;
+    -fx-text-fill: white;
+
 }

@@ -36,12 +36,16 @@ object SystemUtils {
     fun GW2UserDirectory() : String? {
 
         return when {
-            isWindows() -> gw2WindowsUserDirectory
+            isWindows() -> gw2WindowsUserDirectory.replace('\\', '/')
             isOSX64() -> gw2OSX64UserDirectory
             isOSX32() -> gw2OSX32UserDirectory
             else -> null
         }
 
+    }
+
+    fun appWorkspace() : String {
+        return System.getProperty("user.dir").replace('\\', '/')
     }
 
 }

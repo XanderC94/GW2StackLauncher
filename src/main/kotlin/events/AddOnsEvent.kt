@@ -3,7 +3,7 @@ package events
 import tornadofx.*
 
 object AddonsRequest{
-    object InitAvailableAddOnsList: FXEvent(EventBus.RunOn.BackgroundThread)
+    class InitAvailableAddOnsList: FXEvent(EventBus.RunOn.BackgroundThread)
 
 }
 

@@ -17,6 +17,7 @@ class GFXController : Controller() {
 
     fun setGFXSettings(gfx: GW2GFXSettings) {
         this.gfx = gfx
+        fire(GFXRequest.UpdateInstallLocation())
     }
 
 }

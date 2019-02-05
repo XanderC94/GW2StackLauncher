@@ -1,7 +1,7 @@
-package view
+package view.logics
 
 import events.GFXEvent
-import events.GFXRequest
+import view.GW2StackLauncherView
 
 class GFXDisplayLogic(private val view : GW2StackLauncherView) {
 
@@ -15,7 +15,7 @@ class GFXDisplayLogic(private val view : GW2StackLauncherView) {
                 gw2LocationField.isFocusTraversable = false
             }
 
-            fire(GFXRequest.UpdateInstallLocation())
+//            fire(GFXRequest.UpdateInstallLocation())
 
         }
     }

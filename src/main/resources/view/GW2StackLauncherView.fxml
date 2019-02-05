@@ -27,9 +27,9 @@
    <center>
       <TabPane id="GW2SLTabPane" fx:id="GW2SLTabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
          <tabs>
-            <Tab closable="false" text="Overview">
+            <Tab id="OverviewTab" fx:id="OverviewTab" closable="false" text="Overview">
                <content>
-                  <AnchorPane id="OverviewTab" fx:id="OverviewTab">
+                  <AnchorPane>
                      <children>
                         <SplitPane dividerPositions="0.5" layoutX="162.0" layoutY="86.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                           <items>
@@ -48,9 +48,9 @@
                      </children></AnchorPane>
                </content>
             </Tab>
-            <Tab closable="false" text="Options">
+            <Tab id="OptionsTab" fx:id="OptionsTab" closable="false" text="Options">
                <content>
-                  <AnchorPane id="OptionsTab" fx:id="OptionsTab">
+                  <AnchorPane>
                      <children>
                         <SplitPane dividerPositions="0.3" layoutX="135.0" layoutY="80.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <items>
@@ -72,11 +72,13 @@
                                                    <children>
                                                       <Label id="ItemValueLabel" fx:id="OptionValueLabel" text="Value:" />
                                                       <TextField id="ItemValueField" fx:id="OptionValueField" />
+                                                      <ChoiceBox id="OptionValueChoiceBox" fx:id="OptionValueChoiceBox" minWidth="150.0" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
                                                 </FlowPane>
+                                                <Button id="OptionValuesRefreshButton" fx:id="OptionValuesRefreshButton" mnemonicParsing="false" text="Refresh" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -102,9 +104,9 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab closable="false" text="AddOns">
+            <Tab id="AddOnsTab" fx:id="AddOnsTab" closable="false" text="AddOns">
                <content>
-                  <AnchorPane id="AddOnsTab" fx:id="AddOnsTab">
+                  <AnchorPane>
                      <children>
                         <SplitPane dividerPositions="0.29797979797979796" layoutX="112.0" layoutY="60.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <items>
@@ -147,20 +149,35 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab closable="false" text="About">
+            <Tab id="AboutTab" fx:id="AboutTab" closable="false" text="About">
                <content>
-                  <AnchorPane id="AboutTab" fx:id="AboutTab">
+                  <AnchorPane>
                      <children>
                         <BorderPane fx:id="AboutPane" layoutX="163.0" layoutY="124.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <center>
-                              <TextFlow id="AboutGW2SL" fx:id="AboutGW2SL" BorderPane.alignment="CENTER" />
+                              <TextArea editable="false" BorderPane.alignment="CENTER">
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding>
+                              </TextArea>
                            </center>
-                           <top>
-                              <TextFlow id="AboutDeveloper" fx:id="AboutDeveloper" BorderPane.alignment="CENTER" />
-                           </top>
                            <bottom>
-                              <TextFlow id="AboutRepository" fx:id="AboutRepository" BorderPane.alignment="CENTER" />
+                              <TextArea editable="false" BorderPane.alignment="CENTER">
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding>
+                              </TextArea>
                            </bottom>
+                           <top>
+                              <FlowPane id="IconsFlowPane" fx:id="IconsFlowPane" alignment="CENTER_RIGHT" hgap="30.0" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding>
+                              </FlowPane>
+                           </top>
                         </BorderPane>
                      </children>
                   </AnchorPane>

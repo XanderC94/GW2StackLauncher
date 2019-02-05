@@ -1,4 +1,4 @@
-package view
+package view.components
 
 import javafx.scene.control.ListCell
 import javafx.scene.layout.BorderPane
