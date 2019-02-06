@@ -4,7 +4,7 @@ import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Path
 
-interface Parser<T> {
+open class Parser(val mapper : Mapper) {
 
     /**
      * Parse the String representation of <T> and return its POJO representation
@@ -12,7 +12,9 @@ interface Parser<T> {
      * @param rep The String representation of <T>
      * @return The POJO representation of <T>
      */
-    fun parse(rep: String) : T
+    inline fun <reified T> parse(rep: String): T {
+        return mapper.from(rep, T::class.java)
+    }
 
     /**
      * Parse the file containing the String representation of <T> and return its POJO representation
@@ -20,16 +22,19 @@ interface Parser<T> {
      * @param file The file containing the String representation of <T>
      * @return The POJO representation of <T>
      */
-    fun parse(file: File, charset: Charset): T
+    inline fun <reified T> parse(file: File, charset: Charset): T {
+        return parse(file.readText(charset))
+    }
 
     /**
-     * Load the file containing the String representation of @param <T> at the specified Path
+     * Load the file containing the String representation of <T> at the specified Directories
      * and return its POJO representation
      *
-     * @param path The Path where the file is located
+     * @param path The Directories where the file is located
      * @return The POJO representation of <T>
      *
      */
-    fun parse(path: Path, charset: Charset): T
-
+    inline fun <reified T> parse(path: Path, charset: Charset): T {
+        return parse(path.toFile(), charset)
+    }
 }

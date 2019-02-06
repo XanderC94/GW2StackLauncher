@@ -1,15 +1,12 @@
-package model.xml.dumper
+package model.xml
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import model.Dumper
+import model.Mapper
 import model.utils.toPrettyPrintedString
-import model.xml.XMLHeader
-import java.nio.charset.Charset
-import java.nio.file.Path
 
-object GenericXMLDumper : Dumper<Any>{
+object XMLMapper : Mapper {
 
     private val module = JacksonXmlModule()
     private val objMapper = XmlMapper(module)
@@ -19,19 +16,14 @@ object GenericXMLDumper : Dumper<Any>{
         objMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
     }
 
-    override fun dump(obj: Any, path: Path, charset: Charset) {
-        try {
-            path.toFile().writeText(this.dump(obj), charset)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
+    override fun <T> from(string: String, toClazz: Class<T>): T {
+        return objMapper.readValue(string, toClazz)
     }
 
-    override fun dump(obj: Any): String {
+    override fun <T> toString(obj: T): String {
         val xmlStr = objMapper.writeValueAsString(obj)
 
         return "${XMLHeader()}\n${toPrettyPrintedString(xmlStr, 4)}"
     }
-
 
 }

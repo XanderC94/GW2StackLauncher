@@ -11,6 +11,8 @@ buildscript {
     ext.jackson_xml_version = '2.9.8'
     ext.json_org_version = '20180813'
     ext.apachi_commons_lang_version = '3.4'
+    ext.okhttp_version = '3.13.1'
+
     repositories {
         mavenCentral()
     }
@@ -52,7 +54,7 @@ dependencies {
     
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     // test
     implementation "org.jetbrains.kotlin:kotlin-reflect"
     testImplementation "org.jetbrains.kotlin:kotlin-test"

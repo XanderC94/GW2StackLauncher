@@ -8,7 +8,7 @@ class GW2StackLauncherApp: App(GW2StackLauncherView::class) {
     private val appController: AppController by inject()
 
     init {
-        importStylesheet(Nomenclatures.Path.style + Nomenclatures.File.GW2SLStyle)
+        importStylesheet(Nomenclatures.Directories.style + Nomenclatures.Files.GW2SLStyle)
     }
 
     override fun init() {
@@ -18,5 +18,7 @@ class GW2StackLauncherApp: App(GW2StackLauncherView::class) {
         appController.addProgramParameters(parameters.named)
 
     }
+
+
 
 }
