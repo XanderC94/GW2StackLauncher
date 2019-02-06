@@ -1,22 +1,26 @@
 package view.logics
 
 import controller.Logger
-import events.*
+import events.OptionValuesEvent
+import events.OptionValuesRequest
+import events.OptionsEvent
+import events.OptionsRequest
 import javafx.event.EventHandler
 import javafx.scene.control.ListView
-import javafx.scene.control.SelectionMode
 import javafx.scene.control.TextField
 import model.objects.GW2Argument
+import model.utils.Nomenclatures.Options
 import tornadofx.*
 import view.GW2StackLauncherView
 import view.components.ListViewItem
+import view.utils.IPAndRTTConverter
+import view.utils.OptionValuesConversionMapper
+import view.utils.SystemPathConverter
 
-class OptionsDisplayLogic(private val view: GW2StackLauncherView) {
+class OptionsViewLogic(private val view: GW2StackLauncherView) {
 
-    private var lastClickedOption = GW2Argument.Empty()
-
-    class SetOptionValue : GenericRequest()
-    class HideOptionValuePane : GenericRequest()
+    private var lastClickedOption = GW2Argument()
+    private val emptyObsListOfPair = {listOf<Pair<String, String>>().observable()}
 
     init {
 
@@ -25,9 +29,12 @@ class OptionsDisplayLogic(private val view: GW2StackLauncherView) {
             initHandlers()
             initSubscriptions()
 
-            availableOptionsList.selectionModel.selectionMode = SelectionMode.SINGLE
-            optionPaneHeader.hide()
-            optionDescriptionArea.isEditable = false
+            val ovcm = OptionValuesConversionMapper()
+            ovcm.setMapping(Options.authserv, IPAndRTTConverter(), checker = IPAndRTTConverter.Checker)
+            ovcm.setMapping(Options.assertserv, IPAndRTTConverter(), checker = IPAndRTTConverter.Checker)
+            ovcm.setMapping(Options.dat, SystemPathConverter(), checker = SystemPathConverter.Checker)
+
+            optionValueChoiceBox.converter = ovcm
         }
     }
 
@@ -39,7 +46,7 @@ class OptionsDisplayLogic(private val view: GW2StackLauncherView) {
                 if (item!= null) {
                     checkFieldStatusAndMaybeFire(optionValueField, lastClickedOption)
                     optionValueField.clear()
-                    optionValueChoiceBox.items = listOf<String>().observable()
+//                    optionValueComboBox.items = listOf<String>().observable()
                     fire(OptionsRequest.GetOption(item.first))
                 }
             }
@@ -74,7 +81,7 @@ class OptionsDisplayLogic(private val view: GW2StackLauncherView) {
             optionTab.setOnSelectionChanged {
 
                 if (!optionTab.isSelected && checkFieldStatusAndMaybeFire(optionValueField, lastClickedOption)) {
-                    fire(HideOptionValuePane())
+                    hideOptionValueHeader()
                 } else if (optionTab.isSelected) {
                     selectFocusAndScroll(availableOptionsList, lastClickedOption.name)
                 }
@@ -82,12 +89,12 @@ class OptionsDisplayLogic(private val view: GW2StackLauncherView) {
 
             optionValueChoiceBox.selectionModel.selectedItemProperty().onChange{
                 if (it != null) {
-                    optionValueField.text = it.split("@").first()
+                    optionValueField.text = it.first
                 }
             }
 
             optionValuesRefreshButton.onMouseClicked = EventHandler {
-                log.info("FIRED")
+                optionValueChoiceBox.items = emptyObsListOfPair()
                 fire(OptionValuesRequest.GetOptionValues(lastClickedOption.name))
             }
 
@@ -98,11 +105,11 @@ class OptionsDisplayLogic(private val view: GW2StackLauncherView) {
         with(view) {
 
             subscribe<OptionsEvent.OptionsList> {
-                when(it.from.signature) {
-                    OptionsRequest.GetAvailableOptionsList::class.java.name -> {
+                when(it.from) {
+                    is OptionsRequest.GetAvailableOptionsList -> {
                         availableOptionsList.items = it.options.map { arg -> arg.name to arg.isActive}.observable()
                     }
-                    OptionsRequest.GetActiveOptionsList::class.java.name -> {
+                    is OptionsRequest.GetActiveOptionsList -> {
                         activeOptionsList.setItems(it.options.map {
                             arg -> if (arg.hasValue) "${arg.name}:${arg.value}" else arg.name
                         }.observable())
@@ -114,48 +121,55 @@ class OptionsDisplayLogic(private val view: GW2StackLauncherView) {
             }
 
             subscribe<OptionsEvent.Option> {
-                when(it.from.signature) {
-                    OptionsRequest.GetOption::class.java.name -> {
+                when(it.from) {
+                    is OptionsRequest.GetOption -> {
 
-                        fire(OptionsEvent.Option(SetOptionValue(), it.option))
+                        setOptionValue(it.option)
 
                         optionDescriptionArea.text = it.option.description
 
                         lastClickedOption = it.option
                     }
-                    SetOptionValue::class.java.name -> {
-
-                        if (it.option.hasValue) {
-                            fire(OptionValuesRequest.GetOptionValues(it.option.name))
-                        }
-
-                        if(it.option.hasValue && it.option.isActive) {
-                            optionPaneHeader.show()
-                            optionValueField.text = it.option.value
-                        } else {
-                            fire(HideOptionValuePane())
-                        }
-                    }
-                    else -> {
-                        Logger.instance().error("Unknown request signature!")
-                    }
+                    else -> { }
                 }
             }
 
-            subscribe<OptionValuesEvent.OptionValues> {
-                view.optionValueChoiceBox.items = it.values.sortedBy {
-                    it.second
-                }.map {
-                    "${it.first}@${it.second}ms"
-                }.observable()
+            subscribe<OptionValuesEvent.OptionValues<Pair<String, Number>>> { r ->
+
+                view.optionValueChoiceBox.items = r.values
+                        .map{ it.first to it.second.toString() }
+                        .sortedBy { it.second }
+                        .observable()
             }
 
-            subscribe<HideOptionValuePane> {
-                optionValueChoiceBox.items = listOf<String>().observable()
-                optionPaneHeader.hide()
-                optionValueField.clear()
+            subscribe<OptionValuesEvent.OptionValue<Pair<String, Number>>> { r ->
+                val items = view.optionValueChoiceBox.items.toMutableSet()
+                if (!items.map { i -> i.first }.contains(r.value.first)) {
+                    items.add(r.value.first to r.value.second.toString())
+                    view.optionValueChoiceBox.items = items.toList()
+                            .sortedBy { it.second.toLong() }.observable()
+                }
             }
+        }
+    }
 
+    private fun hideOptionValueHeader() {
+        view.optionPaneHeader.hide()
+        view.optionValueField.clear()
+        view.optionValueChoiceBox.items = emptyObsListOfPair()
+    }
+
+    private fun setOptionValue(option: GW2Argument) {
+        if (option.hasValue) {
+            view.optionValueChoiceBox.items = emptyObsListOfPair()
+            view.fire(OptionValuesRequest.GetOptionValues(option.name))
+        }
+
+        if(option.hasValue && option.isActive) {
+            view.optionPaneHeader.show()
+            view.optionValueField.text = option.value
+        } else {
+            hideOptionValueHeader()
         }
     }
 

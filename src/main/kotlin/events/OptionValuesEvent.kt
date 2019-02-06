@@ -5,8 +5,13 @@ object OptionValuesRequest {
 }
 
 object OptionValuesEvent {
-    class OptionValues(
+    class OptionValues<T>(
             override val from: Request,
-            val values: List<Pair<String, Long>>
+            val values: List<T>
+    ) : GenericEvent()
+
+    class OptionValue<T>(
+            override val from: Request,
+            val value: T
     ) : GenericEvent()
 }

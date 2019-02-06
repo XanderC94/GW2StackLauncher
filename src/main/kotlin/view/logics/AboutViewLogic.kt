@@ -8,13 +8,13 @@ import tornadofx.*
 import view.GW2StackLauncherView
 import java.net.URL
 
-class AboutDisplayLogic(view: GW2StackLauncherView) {
+class AboutViewLogic(view: GW2StackLauncherView) {
 
     private val dim = 64.0
 
     val gw2Link = view.imageview {
 //        image = Image(this.javaClass
-//                .getResourceAsStream(Path.icon + File.GW2PoFLogo))
+//                .getResourceAsStream(Directories.icon + Files.GW2PoFLogo))
         isPreserveRatio = true
         fitHeight = dim
         fitWidth = dim
@@ -22,12 +22,12 @@ class AboutDisplayLogic(view: GW2StackLauncherView) {
 
     val githubLink = view.imageview {
 //        image = Image(this.javaClass
-//                .getResourceAsStream(Path.icon + File.GitHubLogo))
+//                .getResourceAsStream(Directories.icon + Files.GitHubLogo))
         isPreserveRatio = true
         fitHeight = dim
         fitWidth = dim
         onMouseClicked = EventHandler {
-            view.fire(AboutRequest.OpenLink(URL(Nomenclatures.URL.repo)))
+            view.fire(AboutRequest.OpenLink(URL(Nomenclatures.URLs.repo)))
         }
     }
 

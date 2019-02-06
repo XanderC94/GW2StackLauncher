@@ -3,7 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.web.WebView?>
 <BorderPane id="GW2SLMainPane" fx:id="GW2SLMainPane" minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <FlowPane id="GW2SLRunPane" fx:id="GW2SLRunPane" alignment="TOP_CENTER" hgap="50.0" BorderPane.alignment="CENTER">
@@ -72,7 +72,7 @@
                                                    <children>
                                                       <Label id="ItemValueLabel" fx:id="OptionValueLabel" text="Value:" />
                                                       <TextField id="ItemValueField" fx:id="OptionValueField" />
-                                                      <ChoiceBox id="OptionValueChoiceBox" fx:id="OptionValueChoiceBox" minWidth="150.0" />
+                                                      <ChoiceBox id="OptionValueChoiceBox" fx:id="OptionValueChoiceBox" maxWidth="150.0" minWidth="150.0" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -116,33 +116,12 @@
                                  </children>
                               </AnchorPane>
                               <AnchorPane fx:id="AddOnsItemPaneAnchor">
-                                 <children>
-                                    <BorderPane id="ItemPane" fx:id="AddOnsItemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <center>
-                                          <TextFlow id="ItemDescriptionPane" fx:id="ItemDescriptionPane1" lineSpacing="1.1" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <BorderPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </BorderPane.margin>
-                                          </TextFlow>
-                                       </center>
-                                       <top>
-                                          <FlowPane id="ItemPaneHeader" fx:id="AddOnsItemPaneHeader" alignment="BASELINE_LEFT" hgap="30.0" BorderPane.alignment="CENTER">
-                                             <padding>
-                                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                                             </padding>
-                                             <BorderPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </BorderPane.margin>
-                                          </FlowPane>
-                                       </top>
-                                    </BorderPane>
-                                 </children>
                                  <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding></AnchorPane>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </padding>
+                                 <children>
+                                    <WebView id="AddOnsWebView" fx:id="AddOnsWebView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children></AnchorPane>
                            </items>
                         </SplitPane>
                      </children>

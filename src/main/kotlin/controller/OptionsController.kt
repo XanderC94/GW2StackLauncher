@@ -2,38 +2,24 @@ package controller
 
 import events.OptionsEvent
 import events.OptionsRequest
-import model.json.dumper.GenericJsonDumper
+import model.json.JSONDumper
 import model.objects.Application
 import model.objects.GW2Argument
-import model.objects.GW2CommandLineOptions
+import model.objects.GW2Arguments
 import model.objects.GW2LocalSettings
 import model.utils.Nomenclatures
 import model.utils.SystemUtils
 import tornadofx.*
 import java.nio.file.Paths
 
+@Suppress("MapGetWithNotNullAssertionOperator")
 class OptionsController : Controller() {
 
     private var optionsLists: Map<String, GW2Argument> = mapOf()
+    private var activeOptions: MutableSet<String> = mutableSetOf()
     private var gw2: Application? = null
 
     init {
-
-//        subscribe<OptionsRequest.LoadAvailableOptionsList> {
-//            val gw2OptionList = CommandLineOptionsParser.parse(it.path, Charsets.UTF_8)
-//
-//            setAvailableOptions(gw2OptionList)
-//        }
-//
-//        subscribe<OptionsRequest.LoadActiveOptionsList> {
-//            val gw2LocalSettingsFile = it.path.toFile()
-//
-//            setActiveOptions(if (gw2LocalSettingsFile.exists()) {
-//                LocalSettingsParser.parse(gw2LocalSettingsFile, Charsets.UTF_8)
-//            } else {
-//                GW2LocalSettings(listOf())
-//            })
-//        }
 
         subscribe<OptionsRequest.GetAvailableOptionsList>{
             fire(OptionsEvent.OptionsList(it, optionsLists.values.toList()))
@@ -77,49 +63,55 @@ class OptionsController : Controller() {
                 SystemUtils.GW2UserDirectory()
             }
 
-            val gw2LocalSettingsPath = Paths.get("$gw2UserDir/${Nomenclatures.File.GW2SettingsJson}")
+            val gw2LocalSettingsPath = Paths.get("$gw2UserDir/${Nomenclatures.Files.GW2LocalSettingsJson}")
 
             val activeOptionsAsList = optionsLists.values.filter { it.isActive }.map {
                 if (it.hasValue) "${it.name}:${it.value}" else it.name
             }.toList()
 
-            GenericJsonDumper.dump(GW2LocalSettings(activeOptionsAsList), gw2LocalSettingsPath, Charsets.UTF_8)
+            JSONDumper.dump(GW2LocalSettings(activeOptionsAsList), gw2LocalSettingsPath, Charsets.UTF_8)
         }
 
         log.info("${this.javaClass.simpleName} READY")
     }
 
-    fun setAvailableOptions(optsList: GW2CommandLineOptions) {
+    fun setAvailableOptions(optsList: GW2Arguments) {
 
         this.optionsLists = optsList.arguments.map {
             it.name to it
-        }.toMap().withDefault { GW2Argument.Empty()}
+        }.toMap().withDefault { GW2Argument()}
 
-        fire(OptionsRequest.GetAvailableOptionsList())
+        if (activeOptions.isNotEmpty()) {
+            setActiveOptions(GW2LocalSettings(activeOptions.toList()))
+        } else {
+            fire(OptionsRequest.GetAvailableOptionsList())
+        }
     }
 
     fun setActiveOptions(localOptions: GW2LocalSettings) {
 
-        localOptions.arguments.map{
-            with(it.split(':')) {
-                this.first() to this.last()
+        if (optionsLists.isNotEmpty()) {
+            localOptions.arguments.map{
+                with(it.split(':')) {
+                    this.first() to this.last()
+                }
+            }.filter {
+                optionsLists.containsKey(it.first)
+            }.forEach {
+                optionsLists[it.first]!!.isActive = true
+                if (optionsLists[it.first]!!.hasValue) {
+                    optionsLists[it.first]!!.value = it.second
+                }
             }
-        }.filter {
-            optionsLists.containsKey(it.first)
-        }.forEach {
-            optionsLists[it.first]!!.isActive = true
-            if (optionsLists[it.first]!!.hasValue) {
-                optionsLists[it.first]!!.value = it.second
-            }
+        } else {
+            activeOptions = localOptions.arguments.toHashSet()
         }
 
         fire(OptionsRequest.GetActiveOptionsList())
     }
 
-    fun setGWApplication(gw2: Application) {
+    fun setGW2Application(gw2: Application) {
         this.gw2 = gw2
-//        val gw2SettingsPath = "${gw2.configPath.value.replace("\\", "/")}/${Nomenclatures.File.GW2SettingsJson}"
-//        fire(OptionsRequest.LoadActiveOptionsList(Paths.get(gw2SettingsPath)))
     }
 
 }

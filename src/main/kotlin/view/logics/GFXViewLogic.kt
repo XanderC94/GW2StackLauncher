@@ -3,7 +3,7 @@ package view.logics
 import events.GFXEvent
 import view.GW2StackLauncherView
 
-class GFXDisplayLogic(private val view : GW2StackLauncherView) {
+class GFXViewLogic(private val view : GW2StackLauncherView) {
 
     init {
         with(view) {

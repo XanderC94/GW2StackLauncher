@@ -1,12 +1,16 @@
 package events
 
-import tornadofx.*
+import model.objects.GW2AddOn
 
 object AddonsRequest{
-    class InitAvailableAddOnsList: FXEvent(EventBus.RunOn.BackgroundThread)
+    class UpdateAvailableAddOns: GenericRequest()
+    class UpdateActiveAddOns: GenericRequest()
 
 }
 
 object AddonsEvent {
-    class AddOnsList(val arguments: List<Any>) : FXEvent()
+    class AddOnsList(
+            override val from: Request,
+            val addOns: List<GW2AddOn>
+    ) : GenericEvent()
 }
