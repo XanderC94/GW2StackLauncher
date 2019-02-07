@@ -9,7 +9,7 @@ import java.io.File
 import java.net.InetAddress
 import java.util.*
 
-class OptionValuesController : Controller(){ //--config-path="D:/Xander/Documenti/Projects/GW2StackLauncher/res/Config.json"
+class OptionValuesController : Controller(), GW2ApplicationController{ //--config-path="D:/Xander/Documenti/Projects/GW2StackLauncher/res/Config.json"
 
     private lateinit var gw2: Application
 
@@ -74,8 +74,8 @@ class OptionValuesController : Controller(){ //--config-path="D:/Xander/Document
     }
 
 
-    fun setGW2Application(application: Application) {
-        this.gw2 = application
+    override fun setGW2Application(gw2: Application) {
+        this.gw2 = gw2
     }
 
 }

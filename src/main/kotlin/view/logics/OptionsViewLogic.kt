@@ -30,9 +30,9 @@ class OptionsViewLogic(private val view: GW2StackLauncherView) {
             initSubscriptions()
 
             val ovcm = OptionValuesConversionMapper()
-            ovcm.setMapping(Options.authserv, IPAndRTTConverter(), checker = IPAndRTTConverter.Checker)
-            ovcm.setMapping(Options.assertserv, IPAndRTTConverter(), checker = IPAndRTTConverter.Checker)
-            ovcm.setMapping(Options.dat, SystemPathConverter(), checker = SystemPathConverter.Checker)
+            ovcm.setMapping(Options.authserv, IPAndRTTConverter(), IPAndRTTConverter)
+            ovcm.setMapping(Options.assertserv, IPAndRTTConverter(), IPAndRTTConverter)
+            ovcm.setMapping(Options.dat, SystemPathConverter(), SystemPathConverter)
 
             optionValueChoiceBox.converter = ovcm
         }
@@ -46,7 +46,6 @@ class OptionsViewLogic(private val view: GW2StackLauncherView) {
                 if (item!= null) {
                     checkFieldStatusAndMaybeFire(optionValueField, lastClickedOption)
                     optionValueField.clear()
-//                    optionValueComboBox.items = listOf<String>().observable()
                     fire(OptionsRequest.GetOption(item.first))
                 }
             }
@@ -63,7 +62,6 @@ class OptionsViewLogic(private val view: GW2StackLauncherView) {
 
             optionValueField.textProperty().onChange {
                 if (isValueFieldUpdateable(optionValueField)) {
-//                    Logger.instance().info(optionValueField.text)
                     fire(OptionsRequest.UpdateOptionValue(lastClickedOption.name, optionValueField.text))
                 }
             }
@@ -72,7 +70,7 @@ class OptionsViewLogic(private val view: GW2StackLauncherView) {
                 val item = activeOptionsList.selectedItem
                 if (item != null) {
                     val option = item.split(":").first()
-                    gw2slTabPane.selectionModel.select(optionTab)
+                    optionTab.select()
                     selectFocusAndScroll(availableOptionsList, option)
                     fire(OptionsRequest.GetOption(option))
                 }

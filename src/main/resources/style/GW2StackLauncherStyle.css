@@ -49,8 +49,43 @@
 .scroll-bar {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-background-color: #cccccc;
-    -fx-border-color: null;
+    -fx-background-color: #333333;
+    -fx-border-color: #333333;
+    -fx-border-width: 1 1 1 0;
+    -fx-text-fill: white;
+}
+
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #333333;
+    /*-fx-border-color: #333333;*/
+    /*-fx-border-width: 0 0 1 0;*/
+    -fx-text-fill: white;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #f1f1f1;
+    -fx-border-color: #f1f1f1;
+    -fx-border-width: 0;
+}
+
+.increment-arrow, .decrement-arrow {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #333333;
+    -fx-border-color: #333333;
+    -fx-border-width: 0;
+}
+
+.thumb {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #f1f1f1;
+    -fx-border-color: #f1f1f1;
+    -fx-border-width: 0;
 }
 
 /** TEXT-FIELD *******************************************************************/
@@ -87,11 +122,13 @@
 
 .split-pane {
     -fx-border-radius: 0;
+    -fx-border-width: 2;
+    -fx-border-color: #818181;
 }
 
 .split-pane:horizontal > .split-pane-divider {
     -fx-background-color: transparent;
-    -fx-border-color: null;
+    -fx-border-color: transparent;
     -fx-border-radius: 0;
 }
 
@@ -120,7 +157,7 @@
 }
 
 .tab-header-background {
-    -fx-background-color: #333;
+    -fx-background-color: #333333;
 }
 
 /** LIST-VIEW *******************************************************************/
@@ -131,6 +168,7 @@
 
 .list-view:focused {
     -fx-border-color: transparent;
+    -fx-border-width: 0;
 }
 
 .list-cell:selected {
@@ -166,4 +204,11 @@
     -fx-background-color: darkred;
     -fx-text-fill: white;
 
+}
+
+/** BORDER-PANE ********************************************************************/
+
+#AddOnsBorderPane, #OptionsBorderPane, #AboutBorderPane {
+    -fx-border-width: 2;
+    -fx-border-color: #818181;
 }

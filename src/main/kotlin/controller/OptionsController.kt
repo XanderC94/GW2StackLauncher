@@ -2,21 +2,20 @@ package controller
 
 import events.OptionsEvent
 import events.OptionsRequest
-import model.json.JSONDumper
 import model.objects.Application
 import model.objects.GW2Argument
 import model.objects.GW2Arguments
 import model.objects.GW2LocalSettings
 import model.utils.Nomenclatures
 import model.utils.SystemUtils
+import model.utils.saveAsJson
 import tornadofx.*
-import java.nio.file.Paths
 
 @Suppress("MapGetWithNotNullAssertionOperator")
-class OptionsController : Controller() {
+class OptionsController : Controller(), ItemController<GW2Arguments, GW2LocalSettings>, GW2ApplicationController {
 
     private var optionsLists: Map<String, GW2Argument> = mapOf()
-    private var activeOptions: MutableSet<String> = mutableSetOf()
+    private var activeOptions: GW2LocalSettings = GW2LocalSettings()
     private var gw2: Application? = null
 
     init {
@@ -63,35 +62,34 @@ class OptionsController : Controller() {
                 SystemUtils.GW2UserDirectory()
             }
 
-            val gw2LocalSettingsPath = Paths.get("$gw2UserDir/${Nomenclatures.Files.GW2LocalSettingsJson}")
+            val gw2LocalSettingsPath = "$gw2UserDir/${Nomenclatures.Files.GW2LocalSettingsJson}"
 
             val activeOptionsAsList = optionsLists.values.filter { it.isActive }.map {
                 if (it.hasValue) "${it.name}:${it.value}" else it.name
             }.toList()
 
-            JSONDumper.dump(GW2LocalSettings(activeOptionsAsList), gw2LocalSettingsPath, Charsets.UTF_8)
+            GW2LocalSettings(activeOptionsAsList).saveAsJson(gw2LocalSettingsPath)
         }
 
         log.info("${this.javaClass.simpleName} READY")
     }
 
-    fun setAvailableOptions(optsList: GW2Arguments) {
+    override fun setAvailableItems(items: GW2Arguments) {
 
-        this.optionsLists = optsList.arguments.map {
-            it.name to it
-        }.toMap().withDefault { GW2Argument()}
+        this.optionsLists = items.arguments.map { it.name to it }
+                .toMap().withDefault { GW2Argument()}
 
-        if (activeOptions.isNotEmpty()) {
-            setActiveOptions(GW2LocalSettings(activeOptions.toList()))
-        } else {
-            fire(OptionsRequest.GetAvailableOptionsList())
+        if (activeOptions.arguments.isNotEmpty()) {
+            setActiveItems(activeOptions)
         }
+
+        fire(OptionsRequest.GetAvailableOptionsList())
     }
 
-    fun setActiveOptions(localOptions: GW2LocalSettings) {
+    override fun setActiveItems(items: GW2LocalSettings) {
 
         if (optionsLists.isNotEmpty()) {
-            localOptions.arguments.map{
+            items.arguments.map{
                 with(it.split(':')) {
                     this.first() to this.last()
                 }
@@ -104,13 +102,13 @@ class OptionsController : Controller() {
                 }
             }
         } else {
-            activeOptions = localOptions.arguments.toHashSet()
+            activeOptions = items
         }
 
         fire(OptionsRequest.GetActiveOptionsList())
     }
 
-    fun setGW2Application(gw2: Application) {
+    override fun setGW2Application(gw2: Application) {
         this.gw2 = gw2
     }
 

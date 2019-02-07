@@ -14,9 +14,6 @@ class GFXViewLogic(private val view : GW2StackLauncherView) {
                 gw2LocationField.text = it.installPath.value
                 gw2LocationField.isFocusTraversable = false
             }
-
-//            fire(GFXRequest.UpdateInstallLocation())
-
         }
     }
 }

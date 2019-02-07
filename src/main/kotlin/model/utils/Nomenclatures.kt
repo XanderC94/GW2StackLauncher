@@ -41,6 +41,10 @@ object Nomenclatures {
         const val optionTab = "OptionsTab"
         const val addOnsTab = "AddOnsTab"
 
+        const val overviewSplitPane = "OverviewSplitPane"
+        const val optionsSplitPane = "OptionsSplitPane"
+        const val addOnsSplitPane = "AddOnsSplitPane"
+
         const val availableOptionsList = "OptionsListView"
         const val availableAddOnsList = "AddOnsListView"
         const val activeOptionsList = "ActiveOptionsListOverView"
@@ -55,9 +59,11 @@ object Nomenclatures {
         const val optionValuesRefreshButton = "OptionValuesRefreshButton"
 
         const val runGW2Button = "RunGW2Button"
+        const val gw2slRunPane = "GW2SLRunPane"
         const val gw2LocationField = "GW2LocationField"
 
         const val iconsFlowPane = "IconsFlowPane"
+
         const val addOnsWebView = "AddOnsWebView"
     }
 

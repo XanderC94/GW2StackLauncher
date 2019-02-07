@@ -1,5 +1,6 @@
 package view
 
+import events.AddOnsRequest
 import events.AppRequest
 import events.OptionsRequest
 import javafx.event.EventHandler
@@ -8,12 +9,11 @@ import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.FlowPane
 import javafx.scene.web.WebView
-import model.utils.Nomenclatures
+import model.utils.Nomenclatures.Components
+import model.utils.Nomenclatures.Directories
+import model.utils.Nomenclatures.Files
 import tornadofx.*
-import view.logics.AboutViewLogic
-import view.logics.AddOnsViewLogic
-import view.logics.GFXViewLogic
-import view.logics.OptionsViewLogic
+import view.logics.*
 
 class GW2StackLauncherView : View("GW2 Stack Launcher") {
 
@@ -23,80 +23,99 @@ class GW2StackLauncherView : View("GW2 Stack Launcher") {
 
     /* TAB */
 
-    val gw2slTabPane : TabPane by fxid(Nomenclatures.Components.gw2slTabPane)
-    val overviewTab : Tab by fxid(Nomenclatures.Components.overviewTab)
-    val optionTab : Tab by fxid(Nomenclatures.Components.optionTab)
-    val addOnsTab : Tab by fxid(Nomenclatures.Components.addOnsTab)
+//    val gw2slTabPane : TabPane by fxid(Components.gw2slTabPane)
+//    val overviewTab : Tab by fxid(Components.overviewTab)
+    val optionTab : Tab by fxid(Components.optionTab)
+    val addOnsTab : Tab by fxid(Components.addOnsTab)
 
+    /* SPLIT PANES */
     /* OPTIONS */
     val availableOptionsList : ListView<Pair<String, Boolean>>
-            by fxid(Nomenclatures.Components.availableOptionsList)
+            by fxid(Components.availableOptionsList)
 
     val activeOptionsList : ListView<String>
-            by fxid(Nomenclatures.Components.activeOptionsList)
+            by fxid(Components.activeOptionsList)
 
     val optionDescriptionArea : TextArea
-            by fxid(Nomenclatures.Components.optionDescriptionArea)
+            by fxid(Components.optionDescriptionArea)
 
     val optionPaneHeader : FlowPane
-            by fxid(Nomenclatures.Components.optionPaneHeader)
+            by fxid(Components.optionPaneHeader)
 
 //    val optionValuePane : FlowPane
-//            by fxid(Nomenclatures.Components.optionValuePane)
+//            by fxid(Components.optionValuePane)
 
     val optionValueField : TextField
-            by fxid(Nomenclatures.Components.optionValueField)
+            by fxid(Components.optionValueField)
 
     val optionValueChoiceBox : ChoiceBox<Pair<String, String>>
-            by fxid(Nomenclatures.Components.optionValueChoiceBox)
+            by fxid(Components.optionValueChoiceBox)
 
     val optionValuesRefreshButton : Button
-            by fxid(Nomenclatures.Components.optionValuesRefreshButton)
+            by fxid(Components.optionValuesRefreshButton)
 
     /* ADD-ONS */
 
     val availableAddOnsList : ListView<Pair<String, Boolean>>
-            by fxid(Nomenclatures.Components.availableAddOnsList)
+            by fxid(Components.availableAddOnsList)
 
     val activeAddOnsList : ListView<String>
-            by fxid(Nomenclatures.Components.activeAddOnsList)
+            by fxid(Components.activeAddOnsList)
 
-    val addOnsWebView : WebView by fxid(Nomenclatures.Components.addOnsWebView)
+    val addOnsWebView : WebView by fxid(Components.addOnsWebView)
 
     /* ABOUT */
-    val iconsFlowPane : FlowPane by fxid(Nomenclatures.Components.iconsFlowPane)
+    val iconsFlowPane : FlowPane by fxid(Components.iconsFlowPane)
 
     /* RUN */
+
+    val gw2slRunPane : FlowPane by fxid(Components.gw2slRunPane)
+
     val runGW2Button : Button
-            by fxid(Nomenclatures.Components.runGW2Button)
+            by fxid(Components.runGW2Button)
 
     val gw2LocationField : TextField
-            by fxid(Nomenclatures.Components.gw2LocationField)
+            by fxid(Components.gw2LocationField)
 
     init {
 
         runGW2Button.action {
             fire(OptionsRequest.SaveOptionsSettings())
-//            fire(OptionsRequest.SaveAddOnsSettings())
+            fire(AddOnsRequest.SaveAddOnsSettings())
         }
 
         primaryStage.onCloseRequest = EventHandler {
             fire(AppRequest.CloseApplication(1))
         }
 
+        val icon = this.javaClass.getResourceAsStream(Directories.icon + Files.GW2SLIcon)
+
+        currentStage?.icons?.add(Image(icon))
+
         currentStage?.isResizable = false
+        currentStage?.minWidth = 800.0
+        currentStage?.minHeight = 600.0
+
         availableOptionsList.selectionModel.selectionMode = SelectionMode.SINGLE
+        availableAddOnsList.selectionModel.selectionMode = SelectionMode.SINGLE
+        activeOptionsList.selectionModel.selectionMode = SelectionMode.SINGLE
+        activeAddOnsList.selectionModel.selectionMode = SelectionMode.SINGLE
+
+        availableOptionsList.minWidth = 250.0
+        availableAddOnsList.minWidth = 250.0
+        activeOptionsList.minWidth = 250.0
+        activeAddOnsList.minWidth = 250.0
+
         optionPaneHeader.hide()
         optionDescriptionArea.isEditable = false
 
-        val icon = this.javaClass.getResourceAsStream(Nomenclatures.Directories.icon + Nomenclatures.Files.GW2SLIcon)
-
-        currentStage?.icons?.add(Image(icon))
+//        addOnsWebView.minWidth = 700.0
 
         val optLogic = OptionsViewLogic(this)
         val gfxLogic = GFXViewLogic(this)
         val aboutLogic = AboutViewLogic(this)
         val addOnsViewLogic = AddOnsViewLogic(this)
+        val webViewLogic = WebViewLogic(this)
 
     }
 }

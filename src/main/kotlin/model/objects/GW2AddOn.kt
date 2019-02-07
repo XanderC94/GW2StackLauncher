@@ -12,9 +12,9 @@ data class GW2AddOn(
         val md5: String,
         val chainloadName: String,
         val type: String,
-        val isActive: Boolean
+        var isActive: Boolean
 ) {
-    companion object : JsonDeserializer<GW2AddOn> {
+    companion object : () -> GW2AddOn, JsonDeserializer<GW2AddOn> {
 
         override fun deserialize(json: JsonElement?,
                                  typeOfT: Type?,
@@ -33,5 +33,8 @@ data class GW2AddOn(
             )
         }
 
+        override fun invoke(): GW2AddOn {
+            return GW2AddOn("","","","","","", false)
+        }
     }
 }

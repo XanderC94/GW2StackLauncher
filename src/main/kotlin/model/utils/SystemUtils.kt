@@ -47,5 +47,4 @@ object SystemUtils {
     fun appWorkspace() : String {
         return System.getProperty("user.dir").replace('\\', '/')
     }
-
 }

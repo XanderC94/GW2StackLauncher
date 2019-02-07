@@ -9,6 +9,7 @@ import model.objects.GW2SLConfig
 object JSONMapper : Mapper {
 
     private val gson = GsonBuilder()
+            .setPrettyPrinting()
             .registerTypeAdapter(GW2AddOn::class.java, GW2AddOn)
             .registerTypeAdapter(GW2SLConfig::class.java, GW2SLConfig)
             .registerTypeAdapter(GW2Argument::class.java, GW2Argument)

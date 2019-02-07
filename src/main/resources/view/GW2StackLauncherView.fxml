@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
-<BorderPane id="GW2SLMainPane" fx:id="GW2SLMainPane" minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="GW2SLMainPane" fx:id="GW2SLMainPane" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
-      <FlowPane id="GW2SLRunPane" fx:id="GW2SLRunPane" alignment="TOP_CENTER" hgap="50.0" BorderPane.alignment="CENTER">
+      <FlowPane id="GW2SLRunPane" fx:id="GW2SLRunPane" alignment="TOP_CENTER" hgap="100.0" minHeight="50.0" BorderPane.alignment="CENTER">
          <children>
             <FlowPane id="GW2LocationPane" fx:id="GW2LocationPane" hgap="10.0">
                <children>
@@ -31,40 +31,42 @@
                <content>
                   <AnchorPane>
                      <children>
-                        <SplitPane dividerPositions="0.5" layoutX="162.0" layoutY="86.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <SplitPane fx:id="OverviewSplitPane" dividerPositions="0.5" layoutX="162.0" layoutY="86.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
                             <AnchorPane>
                                  <children>
-                                    <ListView id="ActiveOptionsListOverView" fx:id="ActiveOptionsListOverView" layoutY="78.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView id="ActiveOptionsListOverView" fx:id="ActiveOptionsListOverView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                             <AnchorPane>
                                  <children>
-                                    <ListView id="ActiveAddOnsListOverView" fx:id="ActiveAddOnsListOverView" layoutX="40.0" layoutY="68.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView id="ActiveAddOnsListOverView" fx:id="ActiveAddOnsListOverView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                           </items>
                         </SplitPane>
-                     </children></AnchorPane>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding></AnchorPane>
                </content>
             </Tab>
             <Tab id="OptionsTab" fx:id="OptionsTab" closable="false" text="Options">
                <content>
                   <AnchorPane>
                      <children>
-                        <SplitPane dividerPositions="0.3" layoutX="135.0" layoutY="80.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                           <items>
-                              <AnchorPane>
+                        <BorderPane id="OptionsBorderPane" fx:id="OptionsBorderPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <left>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <ListView id="OptionsListView" fx:id="OptionsListView" layoutX="-31.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView id="OptionsListView" fx:id="OptionsListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                              <AnchorPane id="ItemPaneAnchor" fx:id="OptionItemPaneAnchor">
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
+                           </left>
+                           <center>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <BorderPane id="ItemPane" fx:id="OptionsItemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <BorderPane id="ItemPane" fx:id="OptionsItemPane" minWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <top>
                                           <FlowPane id="ItemPaneHeader" fx:id="OptionPaneHeader" alignment="BASELINE_LEFT" hgap="30.0" BorderPane.alignment="CENTER">
                                              <children>
@@ -81,10 +83,10 @@
                                                 <Button id="OptionValuesRefreshButton" fx:id="OptionValuesRefreshButton" mnemonicParsing="false" text="Refresh" />
                                              </children>
                                              <padding>
-                                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                              <BorderPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                                              </BorderPane.margin>
                                           </FlowPane>
                                        </top>
@@ -93,14 +95,23 @@
                                              <padding>
                                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                              </padding>
+                                             <BorderPane.margin>
+                                                <Insets top="10.0" />
+                                             </BorderPane.margin>
                                           </TextArea>
                                        </center>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
                                     </BorderPane>
                                  </children>
                               </AnchorPane>
-                           </items>
-                        </SplitPane>
+                           </center>
+                        </BorderPane>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                   </AnchorPane>
                </content>
             </Tab>
@@ -108,23 +119,32 @@
                <content>
                   <AnchorPane>
                      <children>
-                        <SplitPane dividerPositions="0.29797979797979796" layoutX="112.0" layoutY="60.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                           <items>
-                              <AnchorPane>
+                        <BorderPane id="AddOnsBorderPane" fx:id="AddOnsBorderPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <AnchorPane BorderPane.alignment="CENTER">
                                  <children>
-                                    <ListView id="AddOnsListView" fx:id="AddOnsListView" layoutX="-15.0" layoutY="46.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <WebView id="AddOnsWebView" fx:id="AddOnsWebView" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="600.0" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                              </AnchorPane>
+                           </center>
+                           <left>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <ListView id="AddOnsListView" fx:id="AddOnsListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                              <AnchorPane fx:id="AddOnsItemPaneAnchor">
-                                 <padding>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </padding>
-                                 <children>
-                                    <WebView id="AddOnsWebView" fx:id="AddOnsWebView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children></AnchorPane>
-                           </items>
-                        </SplitPane>
+                           </left>
+                        </BorderPane>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                   </AnchorPane>
                </content>
             </Tab>
@@ -132,21 +152,7 @@
                <content>
                   <AnchorPane>
                      <children>
-                        <BorderPane fx:id="AboutPane" layoutX="163.0" layoutY="124.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                           <center>
-                              <TextArea editable="false" BorderPane.alignment="CENTER">
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </TextArea>
-                           </center>
-                           <bottom>
-                              <TextArea editable="false" BorderPane.alignment="CENTER">
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </TextArea>
-                           </bottom>
+                        <BorderPane id="AboutBorderPane" fx:id="AboutBorderPane" layoutX="163.0" layoutY="124.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <top>
                               <FlowPane id="IconsFlowPane" fx:id="IconsFlowPane" alignment="CENTER_RIGHT" hgap="30.0" BorderPane.alignment="CENTER">
                                  <BorderPane.margin>
@@ -159,6 +165,9 @@
                            </top>
                         </BorderPane>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                   </AnchorPane>
                </content>
             </Tab>
