@@ -16,10 +16,10 @@ open class Dumper(val mapper: Mapper) {
     }
 
     /**
-     * Dump the object containing the SPOJO representation of @param <T> at the specified Directories
+     * Dump the object containing the SPOJO representation of @param <T> at the specified Directory
      *
      * @param obj The POJO representation of <T>
-     * @param path The Directories where the file is to be dumped
+     * @param path The Directory where the file is to be dumped
      *
      */
     inline fun <reified T> dump(obj: T, path: Path, charset: Charset){

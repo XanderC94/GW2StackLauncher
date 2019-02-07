@@ -14,7 +14,7 @@ class AboutViewLogic(view: GW2StackLauncherView) {
 
     val gw2Link = view.imageview {
 //        image = Image(this.javaClass
-//                .getResourceAsStream(Directories.icon + Files.GW2PoFLogo))
+//                .getResourceAsStream(Directory.icon + File.GW2PoFLogo))
         isPreserveRatio = true
         fitHeight = dim
         fitWidth = dim
@@ -22,12 +22,12 @@ class AboutViewLogic(view: GW2StackLauncherView) {
 
     val githubLink = view.imageview {
 //        image = Image(this.javaClass
-//                .getResourceAsStream(Directories.icon + Files.GitHubLogo))
+//                .getResourceAsStream(Directory.icon + File.GitHubLogo))
         isPreserveRatio = true
         fitHeight = dim
         fitWidth = dim
         onMouseClicked = EventHandler {
-            view.fire(AboutRequest.OpenLink(URL(Nomenclatures.URLs.repo)))
+            view.fire(AboutRequest.OpenLink(URL(Nomenclatures.URL.repo)))
         }
     }
 

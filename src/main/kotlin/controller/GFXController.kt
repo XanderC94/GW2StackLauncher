@@ -3,21 +3,28 @@ package controller
 import events.GFXEvent
 import events.GFXRequest
 import model.objects.GW2GFXSettings
-import tornadofx.*
 
-class GFXController : Controller() {
+class GFXController : ViewController() {
 
-    private lateinit var gfx: GW2GFXSettings
+    private var gfx: GW2GFXSettings? = null
 
     init {
         subscribe<GFXRequest.UpdateInstallLocation> {
-            fire(GFXEvent.InstallLocation(it, gfx.application.installPath))
+            if (gfx != null) {
+                fire(GFXEvent.InstallLocation(it, gfx!!.application.installPath))
+            }
         }
+    }
+
+    override fun initViewElements() {
+        super.initViewElements()
+        fire(GFXRequest.UpdateInstallLocation())
     }
 
     fun setGFXSettings(gfx: GW2GFXSettings) {
         this.gfx = gfx
-        fire(GFXRequest.UpdateInstallLocation())
+
+        initViewElements()
     }
 
 }

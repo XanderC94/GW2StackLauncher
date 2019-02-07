@@ -9,10 +9,10 @@ class GFXViewLogic(private val view : GW2StackLauncherView) {
         with(view) {
 
             gw2LocationField.isEditable = false
+            gw2LocationField.isFocusTraversable = false
 
             subscribe<GFXEvent.InstallLocation> {
                 gw2LocationField.text = it.installPath.value
-                gw2LocationField.isFocusTraversable = false
             }
         }
     }

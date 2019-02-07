@@ -3,8 +3,8 @@ package events
 import model.objects.GW2AddOn
 
 object AddOnsRequest{
-    class UpdateAvailableAddOns: GenericRequest()
-    class UpdateActiveAddOns: GenericRequest()
+    class GetAvailableAddOns: GenericRequest()
+    class GetActiveAddOns: GenericRequest()
     class UpdateAddOnStatus(val id: String, val status: Boolean): GenericRequest()
     class GetAddOn(val id: String): GenericRequest()
     class ClearWebView : GenericRequest()

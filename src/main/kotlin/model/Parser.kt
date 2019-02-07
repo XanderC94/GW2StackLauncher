@@ -27,10 +27,10 @@ open class Parser(val mapper : Mapper) {
     }
 
     /**
-     * Load the file containing the String representation of <T> at the specified Directories
+     * Load the file containing the String representation of <T> at the specified Directory
      * and return its POJO representation
      *
-     * @param path The Directories where the file is located
+     * @param path The Directory where the file is located
      * @return The POJO representation of <T>
      *
      */

@@ -49,8 +49,8 @@
 .scroll-bar {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-background-color: #333333;
-    -fx-border-color: #333333;
+    -fx-background-color: #818181;
+    -fx-border-color: #818181;
     -fx-border-width: 1 1 1 0;
     -fx-text-fill: white;
 }
@@ -58,7 +58,7 @@
 .scroll-bar:vertical, .scroll-bar:horizontal {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-background-color: #333333;
+    -fx-background-color: #818181;
     /*-fx-border-color: #333333;*/
     /*-fx-border-width: 0 0 1 0;*/
     -fx-text-fill: white;
@@ -208,7 +208,7 @@
 
 /** BORDER-PANE ********************************************************************/
 
-#AddOnsBorderPane, #OptionsBorderPane, #AboutBorderPane {
+#AddOnsBorderPane, #ArgsBorderPane, #AboutBorderPane {
     -fx-border-width: 2;
     -fx-border-color: #818181;
 }

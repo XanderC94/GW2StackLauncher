@@ -10,7 +10,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package File #
 *.jar
 *.war
 *.nar
@@ -28,3 +28,6 @@ hs_err_pid*
 /gradle/
 /.gradle/
 /out/
+/natives/
+/libs/
+/blob_storage/

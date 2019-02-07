@@ -1,57 +1,70 @@
 package controller
 
-import controller.http.HTTP
+import controller.networking.HTTP
 import events.AppRequest
 import javafx.application.Platform
 import model.objects.*
 import model.utils.*
-import model.utils.Nomenclatures.Files
+import model.utils.Nomenclatures.File
 import tornadofx.*
-import java.io.File
-import java.nio.file.Paths
+import java.util.*
 import java.util.logging.Level
 import kotlin.system.exitProcess
 
-class AppController : Controller() {
+class AppController(val parameters: Map<String, String>) : Controller() {
 
-    private val optsController: OptionsController by inject()
-    private val optValuesController: OptionValuesController by inject()
-    private val gfxController: GFXController by inject()
-    private val addOnsController: AddOnsController by inject()
-    private val aboutController: AboutController by inject()
+    private val browserController = BrowserController()
+    private val argsController = ArgumentsController()
+    private val valuesController = ValuesController()
+    private val gfxController = GFXController()
+    private val addOnsController = AddOnsController()
+    private val aboutController = AboutController()
 
     private val gw2UserDir = SystemUtils.GW2UserDirectory()
 
-    private var parameters: Map<String, String> = mapOf()
-
     init {
+
+        subscribe<AppRequest.InitViewElements> {
+
+            val (args, addOns) = loadAppConfig()
+
+            argsController.setAvailableItems(args)
+            addOnsController.setAvailableItems(addOns)
+
+            val gfx = loadGFXSettings()
+
+            if(gfx.isPresent) {
+
+                val configDir = gfx.get().application.configPath.value
+                val localSettings = "$configDir/${File.GW2LocalSettingsJson}".asFile()
+                val localAddOns = "$configDir/${File.GW2LocalAddonsJson}".asFile()
+
+                argsController.setGW2Application(gfx.get().application)
+
+                addLocals(from = localSettings, to = argsController, withDefault = GW2LocalSettings())
+
+                addLocals(from = localAddOns, to = addOnsController, withDefault = GW2LocalAddOns())
+
+                gfxController.setGFXSettings(gfx.get())
+
+                valuesController.setGW2Application(gfx.get().application)
+            }
+
+        }
+
         subscribe<AppRequest.CloseApplication> {
             try {
                 Platform.exit()
+
             } catch (ex: Exception) {}
 
             exitProcess(it.exitCode)
         }
 
-        log.info(optsController.toString())
-        log.info(optValuesController.toString())
-        log.info(gfxController.toString())
-        log.info(addOnsController.toString())
-        log.info(aboutController.toString())
+        log.info("${this.javaClass.simpleName} READY")
     }
 
-    fun addProgramParameters(params: Map<String, String>) {
-        this.parameters = params
-        runAsync {
-            loadAppConfig()
-        }
-
-        runAsync {
-            loadGFXSettings()
-        }
-    }
-
-    private fun loadAppConfig() {
+    private fun loadAppConfig() : Pair<GW2Arguments, GW2AddOns> {
 
         val json = if (
                 parameters.isNotEmpty() &&
@@ -60,109 +73,63 @@ class AppController : Controller() {
 
             parameters["config-path"]!!.asFile().readText()
         } else {
-            this.getResourceAsText("/${Files.GW2SLConfigJson}")
+            this.getResourceAsText("/${File.GW2SLConfigJson}")
         }
 
         val appConfig: GW2SLConfig = json.fromJson()
 
-        runAsync {
-            loadOptionList(appConfig.argumentListLocation)
+        val args = runAsync {
+            return@runAsync get<GW2Arguments>(from = appConfig.argumentListLocation)
         }
 
-        runAsync {
-            loadAddOnList(appConfig.addOnListLocation)
+        val addOns = runAsync {
+            return@runAsync get<GW2AddOns>(from = appConfig.addOnListLocation)
         }
+
+        return  args.get() to addOns.get()
     }
 
-    private fun checkIfNotEmptyElseLoadFromResources(body: String) : String {
-        return if (body.isEmpty()) {
-            log.log(Level.WARNING, "Remote Arguments list hasn't been found. Loading internal.")
-            this.getResourceAsText("/${Files.GW2ArgumentsJson}")
-        } else {
-            body
+    private inline fun <reified T> get(from: String) : T {
+
+        val then : (String) -> T = { json ->
+            if (json.isEmpty()) {
+                log.log(Level.WARNING, "Remote Arguments list hasn't been found. Loading internal.")
+                this.getResourceAsText("/${File.GW2ArgumentsJson}").fromJson()
+            } else {
+                json.fromJson()
+            }
         }
-    }
 
-    private fun loadAddOnList(addOnsListLocation : String) {
-        loadFrom(addOnsListLocation) {
-            val json = checkIfNotEmptyElseLoadFromResources(it)
-
-            val gw2AddOnList : GW2AddOns = json.fromJson()
-
-            addOnsController.setAvailableItems(gw2AddOnList)
-        }
-    }
-
-    private fun loadOptionList(argListLocation: String) {
-
-        loadFrom(argListLocation) {
-
-            val json = checkIfNotEmptyElseLoadFromResources(it)
-
-            val gw2OptionList : GW2Arguments = json.fromJson()
-
-            optsController.setAvailableItems(gw2OptionList)
-        }
-    }
-
-    private fun loadFrom(location: String, then: (String) -> Unit) {
-
-        when {
-            location.contains("http") ->
-                HTTP.GET(location, { _, res ->
-                    then(res.body()?.string() ?: "")
-                }, { _, _ ->
-                    then("")
-                })
-            File(location).exists() -> then(Paths.get(location).toFile().readText())
+        return when {
+            from.contains("http") -> then(HTTP.GET(from).body()?.string() ?: "")
+            from.isFile() -> then(from.asFile().readText())
             else -> then("")
         }
     }
 
-    private fun loadGFXSettings() {
+    private fun loadGFXSettings() : Optional<GW2GFXSettings> {
 
-        val gw2GFXSettingsFile = "$gw2UserDir/${Files.GW2GFXSettings64XML}".asFile()
+        val gw2GFXSettingsFile = "$gw2UserDir/${File.GW2GFXSettings64XML}".asFile()
 
-        if (gw2GFXSettingsFile.exists()) {
+        return if (gw2GFXSettingsFile.exists()) {
 
-            val gfx : GW2GFXSettings = gw2GFXSettingsFile.readText().fromXML()
-
-            optsController.setGW2Application(gfx.application)
-
-            loadGW2LocalSetting(gfx.application.configPath.value)
-
-            loadGW2LocalAddOns(gfx.application.configPath.value)
-
-            gfxController.setGFXSettings(gfx)
-
-            optValuesController.setGW2Application(gfx.application)
+            Optional.of(gw2GFXSettingsFile.readText().fromXML())
 
         } else {
 
             fire(AppRequest.CloseApplication(-9))
+
+            return Optional.empty()
         }
     }
 
-    private fun loadGW2LocalSetting(localSettingsDir: String) {
+    private inline fun <reified T, reified S>
+            addLocals(from: java.io.File, to: ItemController<T, S>, withDefault: S) {
 
-        val localSettings = "$localSettingsDir/${Files.GW2LocalSettingsJson}".asFile()
-
-        addLocalsToController(localSettings, optsController, GW2LocalSettings(listOf()))
-    }
-
-    private fun loadGW2LocalAddOns(localAddOnsDir: String) {
-
-        val localAddOns = "$localAddOnsDir/${Files.GW2LocalAddonsJson}".asFile()
-
-        addLocalsToController(localAddOns, addOnsController, GW2LocalAddOns(listOf()))
-    }
-
-    private inline fun <reified T, reified S> addLocalsToController(file: File, controller: ItemController<T, S>, default: S) {
-
-        controller.setActiveItems(if (file.exists()) {
-            file.readText().fromJson()
+        to.setActiveItems(if (from.exists()) {
+            from.readText().fromJson()
         } else {
-            default
+            withDefault
         })
     }
 }

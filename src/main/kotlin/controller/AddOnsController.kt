@@ -6,22 +6,22 @@ import model.objects.Application
 import model.objects.GW2AddOn
 import model.objects.GW2AddOns
 import model.objects.GW2LocalAddOns
-import tornadofx.*
+import java.util.concurrent.ConcurrentHashMap
 
-class AddOnsController : Controller(), ItemController<GW2AddOns, GW2LocalAddOns>, GW2ApplicationController {
+class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAddOns>, GW2Dipper {
 
-    private var availableAddOns: Map<String, GW2AddOn> = mapOf()
+    private var availableAddOns: Map<String, GW2AddOn> = ConcurrentHashMap()
     private var activeOptions: GW2LocalAddOns = GW2LocalAddOns()
 
     private var gw2: Application? = null
 
     init {
-        subscribe<AddOnsRequest.UpdateAvailableAddOns> {
+        subscribe<AddOnsRequest.GetAvailableAddOns> {
             fire(AddOnsEvent.AddOnsList(it, availableAddOns.values.toList()))
         }
 
-        subscribe<AddOnsRequest.UpdateActiveAddOns> {
-            fire(AddOnsRequest.UpdateAvailableAddOns())
+        subscribe<AddOnsRequest.GetActiveAddOns> {
+            fire(AddOnsRequest.GetAvailableAddOns())
             fire(AddOnsEvent.AddOnsList(it, availableAddOns.values.filter { it.isActive }))
         }
 
@@ -30,7 +30,7 @@ class AddOnsController : Controller(), ItemController<GW2AddOns, GW2LocalAddOns>
 
                 availableAddOns[it.id]!!.isActive = it.status
 
-                fire(AddOnsRequest.UpdateActiveAddOns())
+                fire(AddOnsRequest.GetActiveAddOns())
             }
         }
 
@@ -39,29 +39,36 @@ class AddOnsController : Controller(), ItemController<GW2AddOns, GW2LocalAddOns>
                 fire(AddOnsEvent.AddOn(it, availableAddOns[it.id]!!))
             }
         }
+    }
 
+    override fun initViewElements() {
+        super.initViewElements()
+//        fire(AddOnsRequest.GetAvailableAddOns())
+        fire(AddOnsRequest.GetActiveAddOns())
     }
 
     override fun setAvailableItems(items: GW2AddOns) {
 
-        this.availableAddOns = items.addOns.map { it.name to it }
+        availableAddOns = items.addOns.map { it.name to it }
                 .toMap().withDefault { GW2AddOn() }
+
+        availableAddOns = ConcurrentHashMap(availableAddOns)
 
         if (activeOptions.addOns.isNotEmpty()) {
             setActiveItems(activeOptions)
-        } else {
-            fire(AddOnsRequest.UpdateAvailableAddOns())
         }
     }
 
     override fun setActiveItems(items: GW2LocalAddOns) {
-
         if (availableAddOns.isNotEmpty()) {
+
             items.addOns.filter {
                 availableAddOns.containsKey(it)
             }.forEach {
                 availableAddOns[it]!!.isActive = true
             }
+
+            initViewElements()
         } else {
             activeOptions = items
         }

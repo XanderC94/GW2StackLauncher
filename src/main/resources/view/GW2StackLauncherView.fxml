@@ -3,7 +3,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.web.WebView?>
 <BorderPane id="GW2SLMainPane" fx:id="GW2SLMainPane" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <FlowPane id="GW2SLRunPane" fx:id="GW2SLRunPane" alignment="TOP_CENTER" hgap="100.0" minHeight="50.0" BorderPane.alignment="CENTER">
@@ -11,7 +10,7 @@
             <FlowPane id="GW2LocationPane" fx:id="GW2LocationPane" hgap="10.0">
                <children>
                   <Label id="GW2LocationLabel" fx:id="GW2LocationLabel" text="Guild Wars 2 Location:" />
-                  <TextField id="GW2LocationField" fx:id="GW2LocationField" />
+                  <TextField id="GW2LocationField" fx:id="GW2LocationField" editable="false"/>
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -35,12 +34,12 @@
                           <items>
                             <AnchorPane>
                                  <children>
-                                    <ListView id="ActiveOptionsListOverView" fx:id="ActiveOptionsListOverView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView id="ActiveArgsList" fx:id="ActiveArgsList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                             <AnchorPane>
                                  <children>
-                                    <ListView id="ActiveAddOnsListOverView" fx:id="ActiveAddOnsListOverView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView id="ActiveAddOnsList" fx:id="ActiveAddOnsList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                           </items>
@@ -51,36 +50,36 @@
                      </padding></AnchorPane>
                </content>
             </Tab>
-            <Tab id="OptionsTab" fx:id="OptionsTab" closable="false" text="Options">
+            <Tab id="ArgsTab" fx:id="ArgsTab" closable="false" text="Arguments">
                <content>
                   <AnchorPane>
                      <children>
-                        <BorderPane id="OptionsBorderPane" fx:id="OptionsBorderPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <BorderPane id="ArgsBorderPane" fx:id="ArgsBorderPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <left>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <ListView id="OptionsListView" fx:id="OptionsListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView id="ArgsListView" fx:id="ArgsListView" minWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </left>
                            <center>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <BorderPane id="ItemPane" fx:id="OptionsItemPane" minWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <BorderPane id="ItemPane" fx:id="ArgsItemPane" minWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <top>
-                                          <FlowPane id="ItemPaneHeader" fx:id="OptionPaneHeader" alignment="BASELINE_LEFT" hgap="30.0" BorderPane.alignment="CENTER">
+                                          <FlowPane id="ItemPaneHeader" fx:id="ArgPaneHeader" alignment="BASELINE_LEFT" hgap="30.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <FlowPane id="ItemValuePane" fx:id="OptionValuePane" alignment="BASELINE_LEFT" hgap="10.0">
+                                                <FlowPane id="ItemValuePane" fx:id="ArgValuePane" alignment="BASELINE_LEFT" hgap="10.0">
                                                    <children>
-                                                      <Label id="ItemValueLabel" fx:id="OptionValueLabel" text="Value:" />
-                                                      <TextField id="ItemValueField" fx:id="OptionValueField" />
-                                                      <ChoiceBox id="OptionValueChoiceBox" fx:id="OptionValueChoiceBox" maxWidth="150.0" minWidth="150.0" />
+                                                      <Label id="ItemValueLabel" fx:id="ArgValueLabel" text="Value:" />
+                                                      <TextField id="ItemValueField" fx:id="ArgValueField" />
+                                                      <ChoiceBox id="ArgValueChoiceBox" fx:id="ArgValueChoiceBox" maxWidth="150.0" minWidth="150.0" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
                                                 </FlowPane>
-                                                <Button id="OptionValuesRefreshButton" fx:id="OptionValuesRefreshButton" mnemonicParsing="false" text="Refresh" />
+                                                <Button id="ArgValuesRefreshButton" fx:id="ArgValuesRefreshButton" mnemonicParsing="false" text="Refresh" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -91,7 +90,7 @@
                                           </FlowPane>
                                        </top>
                                        <center>
-                                          <TextArea id="OptionDescriptionArea" fx:id="OptionDescriptionArea" editable="false" prefHeight="200.0" wrapText="true" BorderPane.alignment="CENTER">
+                                          <TextArea id="ArgDescriptionArea" fx:id="ArgDescriptionArea" editable="false" prefHeight="200.0" wrapText="true" BorderPane.alignment="CENTER">
                                              <padding>
                                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                              </padding>
@@ -121,10 +120,10 @@
                      <children>
                         <BorderPane id="AddOnsBorderPane" fx:id="AddOnsBorderPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <center>
-                              <AnchorPane BorderPane.alignment="CENTER">
+                              <AnchorPane fx:id="WebViewAnchor" BorderPane.alignment="CENTER">
                                  <children>
-                                    <WebView id="AddOnsWebView" fx:id="AddOnsWebView" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="600.0" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children>
+                                     <!--<WebView id="AddOnsWebView" fx:id="AddOnsWebView" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="600.0" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />-->
+                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
@@ -136,7 +135,7 @@
                            <left>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <ListView id="AddOnsListView" fx:id="AddOnsListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView id="AddOnsListView" fx:id="AddOnsListView" minWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </left>

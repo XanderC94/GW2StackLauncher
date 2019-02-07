@@ -40,7 +40,7 @@ class AddOnsViewLogic(val view: GW2StackLauncherView) {
 
             availableAddOnsList.setCellFactory {
                 ListViewItem(toggle = { id, status ->
-                    selectAndFocus(availableOptionsList, id)
+                    selectAndFocus(availableArgsList, id)
                     fire(AddOnsRequest.UpdateAddOnStatus(id, status))
                     fire(AddOnsRequest.GetAddOn(id))
                 })
@@ -49,7 +49,7 @@ class AddOnsViewLogic(val view: GW2StackLauncherView) {
             addOnsTab.onSelectionChanged = EventHandler {
                 if (!addOnsTab.isSelected) {
                     fire(AddOnsRequest.ClearWebView())
-                } else if (optionTab.isSelected) {
+                } else if (argumentsTab.isSelected) {
                     selectFocusAndScroll(availableAddOnsList, lastClickedAddOn.name)
                 }
             }
@@ -73,11 +73,11 @@ class AddOnsViewLogic(val view: GW2StackLauncherView) {
         with(view) {
             subscribe<AddOnsEvent.AddOnsList> {
                 when(it.from) {
-                    is AddOnsRequest.UpdateAvailableAddOns -> {
+                    is AddOnsRequest.GetAvailableAddOns -> {
                         availableAddOnsList.items = it.addOns.map { it.name to it.isActive }
                                 .sortedBy { it.first }.observable()
                     }
-                    is AddOnsRequest.UpdateActiveAddOns -> {
+                    is AddOnsRequest.GetActiveAddOns -> {
                         activeAddOnsList.items = it.addOns.map { it.name }.sorted().observable()
                     }
                 }

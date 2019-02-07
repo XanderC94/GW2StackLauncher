@@ -5,9 +5,11 @@ import model.json.JSONParser
 import model.xml.XMLDumper
 import model.xml.XMLParser
 import java.io.File
+import java.net.InetAddress
 import java.nio.charset.Charset
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 
 fun Any.getResourceAsText(classpath: String) : String {
     return this.javaClass.getResourceAsStream(classpath).reader().readText()
@@ -51,4 +53,18 @@ inline fun <reified T > String.fromJson() : T {
 
 inline fun <reified T > String.fromXML() : T {
     return XMLParser.parse(this)
+}
+
+/**
+ * Get RoundTripTime to the specified INetAddress with the given timeout
+ *
+ */
+fun InetAddress.RTT(timeout:Int) : Long {
+
+    val start = Date().time
+
+    this.isReachable(timeout)
+
+    return Date().time - start
+
 }

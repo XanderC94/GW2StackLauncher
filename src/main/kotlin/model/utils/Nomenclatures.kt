@@ -2,22 +2,25 @@ package model.utils
 
 object Nomenclatures {
 
-    object URLs {
+    object URL {
         const val repo = "https://github.com/XanderC94/GW2StackLauncher"
         const val gw2site = "https://www.guildwars2.com/en/"
+    }
+
+    object HostName {
+
         const val gw2OAuthServ1Hostname = "auth1.101.ArenaNetworks.com"
         const val gw2OAuthServ2Hostname = "auth2.101.ArenaNetworks.com"
         const val gw2AssetServHostname = "assetcdn.101.ArenaNetworks.com"
-
     }
 
-    object Directories {
+    object Directory {
         const val icon : String = "/icon/"
         const val style : String = "/style/"
         const val view : String = "/view/"
     }
 
-    object Files {
+    object File {
 
         const val GW2LocalSettingsJson = "Settings.json"
         const val GW2ArgumentsJson = "Arguments.json"
@@ -34,29 +37,29 @@ object Nomenclatures {
         const val GW2PoFLogo = "GW2PoFLogo.png"
     }
 
-    object Components {
+    object Component {
 
         const val gw2slTabPane = "GW2SLTabPane"
         const val overviewTab = "OverviewTab"
-        const val optionTab = "OptionsTab"
+        const val optionTab = "ArgsTab"
         const val addOnsTab = "AddOnsTab"
 
         const val overviewSplitPane = "OverviewSplitPane"
-        const val optionsSplitPane = "OptionsSplitPane"
+        const val optionsSplitPane = "ArgsSplitPane"
         const val addOnsSplitPane = "AddOnsSplitPane"
 
-        const val availableOptionsList = "OptionsListView"
+        const val availableArgsList = "ArgsListView"
         const val availableAddOnsList = "AddOnsListView"
-        const val activeOptionsList = "ActiveOptionsListOverView"
-        const val activeAddOnsList = "ActiveAddOnsListOverView"
+        const val activeArgsList = "ActiveArgsList"
+        const val activeAddOnsList = "ActiveAddOnsList"
 
-        const val optionDescriptionArea = "OptionDescriptionArea"
-        const val optionPaneHeader = "OptionPaneHeader"
-        const val optionValuePane = "OptionValuePane"
-        const val optionValueField = "OptionValueField"
-        const val optionValueChoiceBox = "OptionValueChoiceBox"
+        const val argDescriptionArea = "ArgDescriptionArea"
+        const val argsPaneHeader = "ArgPaneHeader"
+        const val optionValuePane = "ArgValuePane"
+        const val argsValueField = "ArgValueField"
+        const val argsValueChoiceBox = "ArgValueChoiceBox"
 
-        const val optionValuesRefreshButton = "OptionValuesRefreshButton"
+        const val valuesRefreshButton = "ArgValuesRefreshButton"
 
         const val runGW2Button = "RunGW2Button"
         const val gw2slRunPane = "GW2SLRunPane"
@@ -65,10 +68,11 @@ object Nomenclatures {
         const val iconsFlowPane = "IconsFlowPane"
 
         const val addOnsWebView = "AddOnsWebView"
+        const val webViewAnchor = "WebViewAnchor"
     }
 
-    object Options {
-        const val assertserv = "-assetsrv"
+    object Argument {
+        const val assetserv = "-assetsrv"
         const val authserv = "-authsrv"
         const val dat = "-dat"
     }
