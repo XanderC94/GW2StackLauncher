@@ -4,14 +4,14 @@ import javafx.scene.control.ListCell
 import javafx.scene.layout.BorderPane
 import tornadofx.*
 
-class ListViewItem(val toggle: (String, Boolean) -> Unit) : ListCell<Pair<String, Boolean>>() {
+class ListViewItem(val onToggle: (String, Boolean) -> Unit) : ListCell<Pair<String, Boolean>>() {
 
     val label = label(""){}
 
     val toggleButton = togglebutton(text = ToggleStatus.OFF(), selectFirst = false) {
         action {
             this.text = if (this.isSelected) ToggleStatus.ON() else ToggleStatus.OFF()
-            toggle(label.text, this.isSelected)
+            onToggle(label.text, this.isSelected)
         }
     }
 

@@ -1,7 +1,9 @@
 package model.utils
 
+import javafx.scene.control.TextField
 import model.json.JSONDumper
 import model.json.JSONParser
+import model.objects.GW2Argument
 import model.xml.XMLDumper
 import model.xml.XMLParser
 import java.io.File
@@ -67,4 +69,16 @@ fun InetAddress.RTT(timeout:Int) : Long {
 
     return Date().time - start
 
+}
+
+fun TextField.isValueSettable(last: GW2Argument, maxChars:Int): Boolean {
+    return this.text.isNotEmpty() &&
+            this.text.length < maxChars
+            && last.hasValue && last.isActive
+}
+
+fun TextField.isStatusCorrect(last: GW2Argument) : Boolean {
+    return !last.hasValue || last.hasValue &&
+            (this.text.isEmpty() && !last.isActive ||
+                    !this.text.isEmpty() && last.isActive)
 }

@@ -1,13 +1,11 @@
 package view.logics
 
-import events.ArgumentsEvent
-import events.ArgumentsRequest
-import events.ValuesEvent
-import events.ValuesRequest
+import events.*
 import javafx.event.EventHandler
-import javafx.scene.control.TextField
 import model.objects.GW2Argument
 import model.utils.Nomenclatures
+import model.utils.isStatusCorrect
+import model.utils.isValueSettable
 import tornadofx.*
 import view.GW2StackLauncherView
 import view.utils.IPAndRTTConverter
@@ -41,7 +39,7 @@ class ValueViewLogic(val view: GW2StackLauncherView) {
         with(view) {
 
             argValueField.textProperty().onChange {
-                if (isValueFieldUpdateable(argValueField)) {
+                if (argValueField.isValueSettable(lastClickedArg, textFieldsMaxChars)) {
                     fire(ArgumentsRequest.UpdateArgumentValue(lastClickedArg.name, argValueField.text))
                 }
             }
@@ -65,13 +63,23 @@ class ValueViewLogic(val view: GW2StackLauncherView) {
 
             subscribe<ArgumentsEvent.Argument> {
                 when(it.from) {
-                    is ArgumentsRequest.GetArgument -> {
+                    is ArgumentsRequest.GetArgument -> with(it) {
 
-                        setOptionValue(it.argument)
+                        if (argument.hasValue) {
+                            view.argValueChoice.items = emptyObsListOfPair()
+                            view.fire(ValuesRequest.GetArgValues(argument.name))
+                        }
 
-                        argDescriptionArea.text = it.argument.description
+                        if(argument.hasValue && argument.isActive) {
+                            view.argPaneHeader.show()
+                            view.argValueField.text = argument.value
+                        } else {
+                            view.fire(ViewRequest.HideArgumentValueHeader())
+                        }
 
-                        lastClickedArg = it.argument
+                        argDescriptionArea.text = argument.description
+
+                        lastClickedArg = argument
                     }
                 }
             }
@@ -94,32 +102,19 @@ class ValueViewLogic(val view: GW2StackLauncherView) {
                             .sortedBy { it.second.toLong() }.observable()
                 }
             }
+
+            subscribe<ViewRequest.CheckArgumentTextField> {
+                fire(ViewEvent.TextFieldStatus(
+                        it,
+                        argValueField.isStatusCorrect(it.arg)
+                ))
+            }
+
+            subscribe<ViewRequest.HideArgumentValueHeader> {
+                view.argPaneHeader.hide()
+                view.argValueField.clear()
+                view.argValueChoice.items = emptyObsListOfPair()
+            }
         }
-    }
-
-    private fun hideOptionValueHeader() {
-        view.argPaneHeader.hide()
-        view.argValueField.clear()
-        view.argValueChoice.items = emptyObsListOfPair()
-    }
-
-    private fun setOptionValue(option: GW2Argument) {
-        if (option.hasValue) {
-            view.argValueChoice.items = emptyObsListOfPair()
-            view.fire(ValuesRequest.GetArgValues(option.name))
-        }
-
-        if(option.hasValue && option.isActive) {
-            view.argPaneHeader.show()
-            view.argValueField.text = option.value
-        } else {
-            hideOptionValueHeader()
-        }
-    }
-
-    private fun isValueFieldUpdateable(field: TextField): Boolean {
-        return field.text.isNotEmpty() &&
-                field.text.length < view.textFieldsMaxChars
-                && lastClickedArg.hasValue && lastClickedArg.isActive
     }
 }

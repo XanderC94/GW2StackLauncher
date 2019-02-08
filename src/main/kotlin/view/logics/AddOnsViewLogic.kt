@@ -39,7 +39,7 @@ class AddOnsViewLogic(val view: GW2StackLauncherView) {
             }
 
             availableAddOnsList.setCellFactory {
-                ListViewItem(toggle = { id, status ->
+                ListViewItem(onToggle = { id, status ->
                     selectAndFocus(availableArgsList, id)
                     fire(AddOnsRequest.UpdateAddOnStatus(id, status))
                     fire(AddOnsRequest.GetAddOn(id))

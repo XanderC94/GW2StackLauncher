@@ -2,9 +2,10 @@ package view.logics
 
 import events.ArgumentsEvent
 import events.ArgumentsRequest
+import events.ViewEvent
+import events.ViewRequest
 import javafx.event.EventHandler
 import javafx.scene.control.ListView
-import javafx.scene.control.TextField
 import model.objects.GW2Argument
 import tornadofx.*
 import view.GW2StackLauncherView
@@ -26,16 +27,18 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
             availableArgsList.onMouseClicked = EventHandler {
                 val item = availableArgsList.selectedItem
                 if (item!= null) {
-                    checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
-                    argValueField.clear()
+//                    checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
+                    fire(ViewRequest.CheckArgumentTextField(lastClickedArg))
+//                    argValueField.clear()
                     fire(ArgumentsRequest.GetArgument(item.first))
                 }
             }
 
             availableArgsList.setCellFactory {
-                ListViewItem(toggle = { id, status ->
+                ListViewItem(onToggle = { id, status ->
 
-                    checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
+//                    checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
+                    fire(ViewRequest.CheckArgumentTextField(lastClickedArg))
                     selectAndFocus(availableArgsList, id)
                     fire(ArgumentsRequest.UpdateArgumentStatus(id, status))
                     fire(ArgumentsRequest.GetArgument(id))
@@ -54,8 +57,12 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
 
             argumentsTab.setOnSelectionChanged {
 
-                if (!argumentsTab.isSelected && checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)) {
-                    hideOptionValueHeader()
+                if (!argumentsTab.isSelected
+//                        && checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
+                ) {
+//                    hideOptionValueHeader()
+                    fire(ViewRequest.CheckArgumentTextField(lastClickedArg))
+                    fire(ViewRequest.HideArgumentValueHeader())
                 } else if (argumentsTab.isSelected) {
                     selectFocusAndScroll(availableArgsList, lastClickedArg.name)
                 }
@@ -88,13 +95,13 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
                     }
                 }
             }
-        }
-    }
 
-    private fun hideOptionValueHeader() {
-        view.argPaneHeader.hide()
-        view.argValueField.clear()
-        view.argValueChoice.items = emptyObsListOfPair()
+            subscribe<ViewEvent.TextFieldStatus> {
+                if (it.from is ViewRequest.CheckArgumentTextField && !it.ok) {
+                    view.fire(ArgumentsRequest.UpdateArgumentStatus(it.from.arg.name, isActive = false))
+                }
+            }
+        }
     }
 
     private fun selectAndFocus(list: ListView<Pair<String, Boolean>>, item: String) : Int{
@@ -108,19 +115,6 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
         val idx = selectAndFocus(list, item)
         list.scrollTo(if (idx > 1) idx - 1 else idx)
         return idx
-    }
-
-    private fun checkFieldStatusAndMaybeFire(field: TextField, last: GW2Argument) : Boolean {
-        return if (!isTextFieldStatusCorrect(field, last)) {
-            view.fire(ArgumentsRequest.UpdateArgumentStatus(last.name, isActive = false))
-            true
-        } else {
-            false
-        }
-    }
-
-    private fun isTextFieldStatusCorrect(field: TextField, last: GW2Argument) : Boolean {
-        return !last.hasValue || last.hasValue && (field.text.isEmpty() && !last.isActive || !field.text.isEmpty() && last.isActive)
     }
 
 }
