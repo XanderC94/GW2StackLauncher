@@ -25,15 +25,15 @@ buildscript {
     
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-        classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_version"
+//        classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_version"
     }
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'com.github.johnrengelman.shadow'
+//apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'application'
 
-mainClassName = 'GW2StackLauncherApp.kt'
+mainClassName = 'GW2StackLauncherApp'
 
 group 'GW2StackLauncher'
 version '0.0.1'
@@ -57,8 +57,6 @@ repositories {
 }
 
 dependencies {
-    shadow localGroovy()
-    shadow gradleApi()
     
     // compile
 //    compile("org.slf4j:slf4j-api:$slf4j_version")
@@ -74,11 +72,11 @@ dependencies {
     )
 
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_version")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("com.squareup.okhttp3:okhttp:$okhttp_version")
 
     // test
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    compile("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
@@ -87,9 +85,9 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'GW2SL',
                 'Implementation-Version': version,
-                'Main-Class': 'GW2StackLauncherApp'
+                'Main-Class': mainClassName
     }
-    baseName = project.name + '-all'
+    baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }

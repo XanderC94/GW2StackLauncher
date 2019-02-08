@@ -13,7 +13,7 @@ import model.objects.GW2AddOn
 import tornadofx.*
 import view.GW2StackLauncherView
 
-class BrowserLogic (val view: GW2StackLauncherView) {
+class BrowserViewLogic (val view: GW2StackLauncherView) {
 
     private val browserView : BrowserView
     private val browser : Browser
@@ -27,8 +27,9 @@ class BrowserLogic (val view: GW2StackLauncherView) {
 
     init {
 
+        System.setProperty("jxbrowser.chromium.sandbox", "true")
         BrowserPreferences.setUserAgent(userAgent)
-        browser = Browser(BrowserType.LIGHTWEIGHT, BrowserContext.defaultContext())
+        browser = Browser(BrowserType.HEAVYWEIGHT, BrowserContext.defaultContext())
         browserView = BrowserView(browser)
 
         view.webViewAnchor.add(browserView)

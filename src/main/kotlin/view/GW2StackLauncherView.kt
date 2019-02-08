@@ -99,7 +99,7 @@ class GW2StackLauncherView : View("GW2 Stack Launcher") {
         val gfxLogic = GFXViewLogic(this)
         val aboutLogic = AboutViewLogic(this)
         val addOnsViewLogic = AddOnsViewLogic(this)
-        val webViewLogic = BrowserLogic(this)
+        val webViewLogic = BrowserViewLogic(this)
 
         log.info("${this.javaClass.simpleName} READY")
 

@@ -1,0 +1,68 @@
+{
+    "addOns": [
+        {
+            "name": "GW2 Radial",
+            "url": "https://github.com/Friendly0Fire/GW2Radial/releases/download/v1.1.0/GW2Radial.zip",
+            "info": "https://github.com/Friendly0Fire/GW2Radial",
+            "md5": "",
+            "chainloadName": "d3d9_radial.dll",
+            "type": "dll"
+        },
+        {
+            "name": "ArcDPS",
+            "url": "https://www.deltaconnected.com/arcdps/x64/d3d9.dll",
+            "info": "https://www.deltaconnected.com/arcdps/",
+            "md5": "https://www.deltaconnected.com/arcdps/x64/d3d9.dll.md5sum",
+            "chainloadName": "d3d9.dll",
+            "type": "dll"
+        },
+        {
+            "name": "Build Template",
+            "url": "https://www.deltaconnected.com/arcdps/x64/buildtemplates/d3d9_arcdps_buildtemplates.dll",
+            "info": "https://www.deltaconnected.com/arcdps/",
+            "md5": "https://www.deltaconnected.com/arcdps/x64/d3d9.dll.md5sum",
+            "chainloadName": "d3d9_arcdps_buildtemplates.dll",
+            "type": "dll"
+        },
+        {
+            "name": "Tactial Overlay",
+            "url": "https://www.dropbox.com/s/nks140nf794tx77/GW2TacO_034r.zip",
+            "info": "http://www.gw2taco.com/",
+            "md5": "",
+            "chainloadName": "",
+            "type": "overlay"
+        },
+        {
+            "name": "GW2 Hook",
+            "url": "https://04348.github.io/Gw2Hook/download.html",
+            "info": "https://04348.github.io/Gw2Hook/index.html",
+            "md5": "",
+            "chainloadName": "ReShade64.dll",
+            "type": "dll"
+        },
+        {
+            "name": "Scrolling Combat Text",
+            "url": "https://github.com/ideka/AugTyr/releases/download/v0.4-beta/AugTyr-0.4.zip",
+            "info": "https://github.com/ideka/AugTyr",
+            "md5": "",
+            "chainloadName": "d3d9_arcdps_sct.dll",
+            "type": "dll"
+        },
+        {
+            "name": "Gw2 Launchbuddy",
+            "url": "https://github.com/TheCheatsrichter/Gw2_Launchbuddy/releases/download/1.8.5/Gw2.Launchbuddy.exe",
+            "info": "https://github.com/TheCheatsrichter/Gw2_Launchbuddy",
+            "md5": "",
+            "chainloadName": "",
+            "type": "launcher"
+        },
+        {
+            "name": "d912pxy",
+            "url": "https://github.com/megai2/d912pxy/releases/download/v0.9.6a/d912pxy_v0.9.6a.zip",
+            "info": "https://github.com/megai2/d912pxy",
+            "md5": "",
+            "chainloadName": "",
+            "type": "dll"
+        }
+    ]
+}

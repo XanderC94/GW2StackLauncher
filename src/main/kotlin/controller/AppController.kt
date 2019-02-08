@@ -11,6 +11,9 @@ import java.util.*
 import java.util.logging.Level
 import kotlin.system.exitProcess
 
+// --config-path="D:\Xander\Documenti\Projects\GW2StackLauncher\res\Config.json"
+// https://raw.githubusercontent.com/XanderC94/GW2SLResources/master/Arguments.json
+// https://raw.githubusercontent.com/XanderC94/GW2SLResources/master/AddOns.json
 class AppController(val parameters: Map<String, String>) : Controller() {
 
     private val browserController = BrowserController()
@@ -22,11 +25,20 @@ class AppController(val parameters: Map<String, String>) : Controller() {
 
     private val gw2UserDir = SystemUtils.GW2UserDirectory()
 
+    enum class SourceType(val default: String) {
+        Arguments(File.GW2ArgumentsJson), AddOns(File.GW2AddOnsJson)
+    }
+
+    class Source(val type: SourceType, val location: String)
+
     init {
 
         subscribe<AppRequest.InitViewElements> {
 
             val (args, addOns) = loadAppConfig()
+
+            log.info(args.toString())
+            log.info(addOns.toString())
 
             argsController.setAvailableItems(args)
             addOnsController.setAvailableItems(addOns)
@@ -66,45 +78,49 @@ class AppController(val parameters: Map<String, String>) : Controller() {
 
     private fun loadAppConfig() : Pair<GW2Arguments, GW2AddOns> {
 
-        val json = if (
+        val appConfig : GW2SLConfig = if (
                 parameters.isNotEmpty() &&
                 parameters.containsKey("config-path") &&
                 parameters["config-path"]!!.isFile()) {
 
-            parameters["config-path"]!!.asFile().readText()
+            parameters["config-path"]!!.asFile().readText().fromJson()
         } else {
-            this.getResourceAsText("/${File.GW2SLConfigJson}")
+            this.getResourceAsText("/${File.GW2SLConfigJson}").fromJson()
         }
 
-        val appConfig: GW2SLConfig = json.fromJson()
+        log.info(appConfig.toString())
 
         val args = runAsync {
-            return@runAsync get<GW2Arguments>(from = appConfig.argumentListLocation)
+            val argsSrc = Source(SourceType.Arguments, appConfig.argumentListLocation)
+            return@runAsync get<GW2Arguments>(from = argsSrc)
         }
 
         val addOns = runAsync {
-            return@runAsync get<GW2AddOns>(from = appConfig.addOnListLocation)
+            val addOnsSrc = Source(SourceType.AddOns, appConfig.addOnListLocation)
+            return@runAsync get<GW2AddOns>(from = addOnsSrc)
         }
 
         return  args.get() to addOns.get()
     }
 
-    private inline fun <reified T> get(from: String) : T {
+    private inline fun <reified T> get(from: Source) : T {
+
+        log.info(from.location)
 
         val then : (String) -> T = { json ->
             if (json.isEmpty()) {
-                log.log(Level.WARNING, "Remote Arguments list hasn't been found. Loading internal.")
-                this.getResourceAsText("/${File.GW2ArgumentsJson}").fromJson()
+                log.log(Level.WARNING, "${from.location} hasn't been found. Loading internal.")
+                this.getResourceAsText("/${from.type.default}").fromJson()
             } else {
                 json.fromJson()
             }
         }
 
-        return when {
-            from.contains("http") -> then(HTTP.GET(from).body()?.string() ?: "")
-            from.isFile() -> then(from.asFile().readText())
-            else -> then("")
-        }
+        return then (when {
+            from.location.contains("http") -> HTTP.GET(from.location).body()?.string() ?: ""
+            from.location.isFile() -> from.location.asFile().readText()
+            else -> ""
+        })
     }
 
     private fun loadGFXSettings() : Optional<GW2GFXSettings> {

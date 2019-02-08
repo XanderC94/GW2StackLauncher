@@ -25,7 +25,7 @@ object Nomenclatures {
         const val GW2LocalSettingsJson = "Settings.json"
         const val GW2ArgumentsJson = "Arguments.json"
         const val GW2GFXSettings64XML = "GFXSettings.Gw2-64.exe.xml"
-        const val GW2AddonsJson = "AddOns.json"
+        const val GW2AddOnsJson = "AddOns.json"
         const val GW2LocalAddonsJson = "AddOns.local.json"
         const val GW2SLConfigJson = "Config.json"
         const val GW2SLStyle = "GW2StackLauncherStyle.css"
