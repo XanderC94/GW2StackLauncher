@@ -56,11 +56,12 @@ and the button "Run Guild Wars 2" can be found.
     so that they can be easily updated for everyone.
 
 * Q: Why a JVM-based language?
-    * A: I've chosen Kotlin (sorry Scala, next time) for 3 main reasons: 
-        * (A) I haven't used in a long time and it is essentially Java on steroids
+    * A: I've chosen Kotlin (sorry Scala, next time) for 2 main reasons: 
+        * (A) I haven't used it in a long time and it is essentially Java on steroids
         * (B) JVM-based languages are multi platform without much headache as using C++.
         This way even player that play GW2 on Mac may take advantage of this. 
-        Maybe on Linux as well but maybe needs some check-up being completely sure, so be my guest to test
+        Maybe on Linux users as well but it needs some check-up before being completely sure, 
+        so be my guest to test it.
 
 For everything else check the source code available.
 
@@ -83,5 +84,5 @@ Some AddOns are "officially" permitted by ArenaNet others aren't (for now). So u
 ### TeamDev
 
 This project make use of Jx Browser library by TeamDev. Their software is proprietary and no source code can be or will be provided.
-This project use their libraries provided under a Perpetual License for free and open-source software only. 
+This project use their libraries under a Perpetual License for free and open-source software only. 
 Any fork, copy, modification of this project that will still use Jx Browser will need to request such License or pay for one.
