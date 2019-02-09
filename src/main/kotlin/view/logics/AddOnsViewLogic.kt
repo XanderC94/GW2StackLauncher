@@ -47,9 +47,7 @@ class AddOnsViewLogic(val view: GW2StackLauncherView) {
             }
 
             addOnsTab.onSelectionChanged = EventHandler {
-                if (!addOnsTab.isSelected) {
-                    fire(AddOnsRequest.ClearWebView())
-                } else if (argumentsTab.isSelected) {
+                if (addOnsTab.isSelected) {
                     selectFocusAndScroll(availableAddOnsList, lastClickedAddOn.name)
                 }
             }

@@ -2,15 +2,86 @@
 
 Straight-Forward and Minimal Launcher for Guild Wars 2 with its addons and command-line parameters.
 
-## Features
+## What it does
 
 * Automatically enable, update and disable any AddOns available for GW2
 * Choose and set-up command-line parameters
 
-## Notes for the Users
+## Usage
 
+The UI is composed of 3 main tabs:
+
+* **Overview**: There you can overlook the actual status of your configuration 
+regarding chosen Command Line Arguments and AddOns/Plugins/Overlays.
+
+* **Arguments**: This tab is mainly focused on showing descriptions of every single *available* 
+command-line argument. Each argument may be activated or deactivated through a toggle button 
+on the right side of the Argument, inside the list visible on the left side of the gui.
+
+* **AddOns**: This tab contains a list of the most used AddOns for Guild Wars 2. 
+Selecting one of them will display on the integrated [Jx Browser](https://www.teamdev.com/jxbrowser) 
+the application web-page/github repository. Each plugin may be toggled similarly to the arguments.
+**NOTE**: Each plugin will be installed, organized and renamed accordingly for chain-loading on by 
+clicking on the "Run Guild Wars 2" button. Moreover, as a key feature of this application, 
+add-ons will be updated at each launch new launch (if possible).
+
+* **About**: Guess what it does? It display this very ReadMe. 
+
+Other than these tabs there is a bottom component where the GW2 Install Location is displayed 
+and the button "Run Guild Wars 2" can be found.
+
+#### Browser Key-Bindings
+
+* **RELOAD**:       F5
+* **FORWARD**:      ALT + →
+* **BACKWARD**:     ALT + ←
+
+## FAQ
+
+* Q: Will you add multi-boxing support? 
+    * A: No, use [Gw2LaunchBuddy](https://github.com/TheCheatsrichter/Gw2_Launchbuddy) instead
+
+* Q: Is this tool safe to use from the point-of-view of 
+[GW2 Content Terms of Use](https://www.guildwars2.com/en/legal/guild-wars-2-content-terms-of-use/) ?
+    * A: It should be. The only things the tools interact with are:
+        * [external resources](https://github.com/XanderC94/GW2SLResources)
+        * The Setting.json to store GW2 cmd-line arguments
+        * The GFX file where GW2 Installation and Graphics Settings are located
+        * An AddOns.local.json where info of the locally installed plugins are stored
+        
+        It doesn't touch whatever .dat file present.
+
+* Q: Why this tool does HTTP calls?
+    * A: 'cause updated Arguments and AddOns are hosted [here](https://github.com/XanderC94/GW2SLResources)
+    so that they can be easily updated for everyone.
+
+* Q: Why a JVM-based language?
+    * A: I've chosen Kotlin (sorry Scala, next time) for 3 main reasons: 
+        * (A) I haven't used in a long time and it is essentially Java on steroids
+        * (B) JVM-based languages are multi platform without much headache as using C++.
+        This way even player that play GW2 on Mac may take advantage of this. 
+        Maybe on Linux as well but maybe needs some check-up being completely sure, so be my guest to test
+
+For everything else check the source code available.
+
+## To-Do
+
+[Look Here](https://trello.com/b/wTMttZAN/gw2stacklauncher)
+
+# DISCLAIMER
+
+## External Resources
+
+### ArenaNet
+
+This project use some artworks by ArenaNet. All the ownership of such content goes to ArenaNet. 
+With the project is provided the Copyright for GW2 material by ArenaNet as stated in their policies.
 [GW2 Content Terms of Use](https://www.guildwars2.com/en/legal/guild-wars-2-content-terms-of-use/)
 
-This project use some artworks by ArenaNet. All the ownership of such content goes to ArenaNet. With the project is provided the Copyright for GW2 material by ArenaNet.
-
 Some AddOns are "officially" permitted by ArenaNet others aren't (for now). So use them at your own risk. 
+
+### TeamDev
+
+This project make use of Jx Browser library by TeamDev. Their software is proprietary and no source code can be or will be provided.
+This project use their libraries provided under a Perpetual License for free and open-source software only. 
+Any fork, copy, modification of this project that will still use Jx Browser will need to request such License or pay for one.

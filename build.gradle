@@ -68,6 +68,8 @@ dependencies {
     compile files(
             "$rootProject.projectDir/libs/lib/jxbrowser-6.22.2.jar", 
             "$rootProject.projectDir/libs/lib/jxbrowser-win64-6.22.2.jar", 
+            "$rootProject.projectDir/libs/lib/jxbrowser-mac-6.22.2.jar", 
+            "$rootProject.projectDir/libs/lib/jxbrowser-linux64-6.22.2.jar", 
             "$rootProject.projectDir/libs/license.jar"
     )
 

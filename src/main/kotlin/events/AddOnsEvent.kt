@@ -7,7 +7,6 @@ object AddOnsRequest{
     class GetActiveAddOns: GenericRequest()
     class UpdateAddOnStatus(val id: String, val status: Boolean): GenericRequest()
     class GetAddOn(val id: String): GenericRequest()
-    class ClearWebView : GenericRequest()
     class SaveAddOnsSettings : GenericRequest()
 }
 

@@ -16,7 +16,6 @@ import kotlin.system.exitProcess
 // https://raw.githubusercontent.com/XanderC94/GW2SLResources/master/AddOns.json
 class AppController(val parameters: Map<String, String>) : Controller() {
 
-    private val browserController = BrowserController()
     private val argsController = ArgumentsController()
     private val valuesController = ValuesController()
     private val gfxController = GFXController()
@@ -36,9 +35,6 @@ class AppController(val parameters: Map<String, String>) : Controller() {
         subscribe<AppRequest.InitViewElements> {
 
             val (args, addOns) = loadAppConfig()
-
-            log.info(args.toString())
-            log.info(addOns.toString())
 
             argsController.setAvailableItems(args)
             addOnsController.setAvailableItems(addOns)
@@ -87,8 +83,6 @@ class AppController(val parameters: Map<String, String>) : Controller() {
         } else {
             this.getResourceAsText("/${File.GW2SLConfigJson}").fromJson()
         }
-
-        log.info(appConfig.toString())
 
         val args = runAsync {
             val argsSrc = Source(SourceType.Arguments, appConfig.argumentListLocation)

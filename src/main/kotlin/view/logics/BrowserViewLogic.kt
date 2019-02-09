@@ -6,9 +6,13 @@ import com.teamdev.jxbrowser.chromium.BrowserPreferences
 import com.teamdev.jxbrowser.chromium.BrowserType
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView
 import events.AddOnsEvent
-import events.BrowserEvent
-import events.BrowserRequest
-import events.NoRequest
+import events.AppRequest
+import javafx.event.EventHandler
+import javafx.scene.control.MenuItem
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination
+import javafx.scene.input.KeyEvent
 import model.objects.GW2AddOn
 import tornadofx.*
 import view.GW2StackLauncherView
@@ -44,25 +48,86 @@ class BrowserViewLogic (val view: GW2StackLauncherView) {
         handlers()
 
         subscriptions()
-
-        view.fire(BrowserEvent.BrowserInstance(NoRequest(), browser))
     }
 
     private fun handlers() {
         with(view) {
-
+            browserView.onKeyPressed = EventHandler {
+                BrowserAction(browser, it)
+            }
         }
     }
 
     private fun subscriptions() {
         with(view) {
 
-            subscribe<BrowserRequest.UpdateBrowser> {
-                fire(BrowserEvent.BrowserInstance(NoRequest(), browser))
+            subscribe<AddOnsEvent.AddOn> { r ->
+
+                if(browser.url != r.addOn.info) {
+                    lastSelectedAddOn = r.addOn
+                    Browser.invokeAndWaitFinishLoadingMainFrame(browser) {
+                        it.loadURL(r.addOn.info)
+                    }
+
+                }
             }
 
-            subscribe<AddOnsEvent.AddOn> {
-                lastSelectedAddOn = it.addOn
+            subscribe<AppRequest.CloseApplication> {
+                try {
+                    browser.stop()
+                    browser.dispose()
+                } catch (ex: Exception) {}
+            }
+        }
+    }
+
+    enum class BrowserAction (
+            private val keyCombo : KeyCodeCombination,
+            private val strategy : (Browser) -> Unit) : (Browser) -> Unit {
+
+        Reload(KeyCodeCombination(KeyCode.F5), { browser ->
+            browser.reload()
+        }),
+        Forward(KeyCodeCombination(KeyCode.RIGHT, KeyCombination.ALT_DOWN), { browser ->
+            if (browser.canGoForward()) {
+                val index = browser.currentNavigationEntryIndex
+                browser.goToIndex(index + 1)
+            }
+        }),
+        Backward(KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN), { browser ->
+            if (browser.navigationEntryCount > 2) {
+                val index = browser.currentNavigationEntryIndex
+                browser.goToIndex(index - 1)
+            }
+        });
+
+        override fun invoke(browser: Browser) {
+            this.strategy(browser)
+        }
+
+        companion object : (Browser, KeyEvent) -> Unit{
+            override fun invoke(browser: Browser, combo: KeyEvent) {
+                val action = get(combo)
+                if (action != null) {
+                    action.strategy(browser)
+                }
+            }
+
+            private fun get(event: KeyEvent) : BrowserAction? {
+                return BrowserAction.values().firstOrNull { it.keyCombo.match(event) }
+            }
+        }
+
+        fun toMenuItem(browser: Browser) : MenuItem {
+
+            val name = "${this.name}\t\t${this.keyCombo.displayText}"
+
+            return object : MenuItem(name) {
+                init {
+                    this.onAction = EventHandler {
+                        this@BrowserAction.strategy(browser)
+                    }
+                }
             }
         }
     }
