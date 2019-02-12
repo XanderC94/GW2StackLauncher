@@ -19,7 +19,7 @@ command-line argument. Each argument may be activated or deactivated through a t
 on the right side of the Argument, inside the list visible on the left side of the gui.
 
 * **AddOns**: This tab contains a list of the most used AddOns for Guild Wars 2. 
-Selecting one of them will display on the integrated [Jx Browser](https://www.teamdev.com/jxbrowser) 
+Selecting one of them will display on the integrated [JxBrowser](https://www.teamdev.com/jxbrowser) 
 the application web-page/github repository. Each plugin may be toggled similarly to the arguments.
 **NOTE**: Each plugin will be installed, organized and renamed accordingly for chain-loading when 
 clicking on the "Run Guild Wars 2" button. Moreover, as a key feature of this application, 
