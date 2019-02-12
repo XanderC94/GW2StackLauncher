@@ -43,20 +43,19 @@ class AppController(val parameters: Map<String, String>) : Controller() {
 
             if(gfx.isPresent) {
 
-                val configDir = gfx.get().application.configPath.value
-                val localSettings = "$configDir/${File.GW2LocalSettingsJson}".asFile()
-                val localAddOns = "$configDir/${File.GW2LocalAddonsJson}".asFile()
-
-                argsController.setGW2Application(gfx.get().application)
+                val gw2ConfigDir = gfx.get().application.configPath.value
+                val localSettings = "$gw2ConfigDir/${File.GW2LocalSettingsJson}".asFile()
 
                 addLocals(from = localSettings, to = argsController, withDefault = GW2LocalSettings())
 
-                addLocals(from = localAddOns, to = addOnsController, withDefault = GW2LocalAddOns())
-
                 gfxController.setGFXSettings(gfx.get())
 
+                argsController.setGW2Application(gfx.get().application)
                 valuesController.setGW2Application(gfx.get().application)
             }
+
+            val localAddOns = "${SystemUtils.gw2slDir()!!}/${File.GW2LocalAddonsJson}".asFile()
+            addLocals(from = localAddOns, to = addOnsController, withDefault = GW2LocalAddOns())
 
         }
 

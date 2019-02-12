@@ -13,6 +13,7 @@ object JSONMapper : Mapper {
             .registerTypeAdapter(GW2AddOn::class.java, GW2AddOn)
             .registerTypeAdapter(GW2SLConfig::class.java, GW2SLConfig)
             .registerTypeAdapter(GW2Argument::class.java, GW2Argument)
+//            .registerTypeAdapter(GW2LocalAddOns::class.java, GW2LocalAddOns)
             .create()
 
     override fun <T> from(string: String, toClazz: Class<T>): T {

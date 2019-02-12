@@ -2,18 +2,19 @@ package controller
 
 import events.AddOnsEvent
 import events.AddOnsRequest
-import model.objects.Application
 import model.objects.GW2AddOn
 import model.objects.GW2AddOns
 import model.objects.GW2LocalAddOns
+import model.utils.Nomenclatures
+import model.utils.SystemUtils
+import model.utils.saveAsJson
 import java.util.concurrent.ConcurrentHashMap
 
-class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAddOns>, GW2Dipper {
+
+class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAddOns> {
 
     private var availableAddOns: Map<String, GW2AddOn> = ConcurrentHashMap()
     private var activeOptions: GW2LocalAddOns = GW2LocalAddOns()
-
-    private var gw2: Application? = null
 
     init {
         subscribe<AddOnsRequest.GetAvailableAddOns> {
@@ -37,6 +38,21 @@ class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAdd
         subscribe<AddOnsRequest.GetAddOn> {
             if (availableAddOns.containsKey(it.id)) {
                 fire(AddOnsEvent.AddOn(it, availableAddOns[it.id]!!))
+            }
+        }
+
+        subscribe<AddOnsRequest.SaveAddOnsSettings> {
+
+            runAsync {
+
+                val asList = availableAddOns.values.filter { it.isActive }.map { it.name }
+
+                val gw2LocalAddOnsPath = "${SystemUtils.gw2slDir()!!}/${Nomenclatures.File.GW2LocalAddonsJson}"
+
+                GW2LocalAddOns(asList).saveAsJson(gw2LocalAddOnsPath)
+
+                log.info("AddOns.local.json saved!")
+
             }
         }
     }
@@ -69,13 +85,9 @@ class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAdd
             }
 
             initViewElements()
-        } else {
-            activeOptions = items
         }
 
-    }
+        activeOptions = items
 
-    override fun setGW2Application(gw2: Application) {
-        this.gw2 = gw2
     }
 }

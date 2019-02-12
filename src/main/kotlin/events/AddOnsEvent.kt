@@ -1,6 +1,7 @@
 package events
 
 import model.objects.GW2AddOn
+import model.objects.GW2Argument
 
 object AddOnsRequest{
     class GetAvailableAddOns: GenericRequest()
@@ -8,6 +9,7 @@ object AddOnsRequest{
     class UpdateAddOnStatus(val id: String, val status: Boolean): GenericRequest()
     class GetAddOn(val id: String): GenericRequest()
     class SaveAddOnsSettings : GenericRequest()
+    class DownloadAndUpdateAddOns(addons: List<GW2Argument>, lastActive: List<String>) : GenericRequest()
 }
 
 object AddOnsEvent {

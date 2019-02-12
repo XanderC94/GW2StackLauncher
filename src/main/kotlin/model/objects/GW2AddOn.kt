@@ -1,8 +1,8 @@
 package model.objects
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
+import com.google.gson.*
+import model.utils.append
+import model.utils.build
 import java.lang.reflect.Type
 
 data class GW2AddOn(
@@ -10,11 +10,31 @@ data class GW2AddOn(
         val url: String,
         val info: String,
         val md5: String,
-        val chainloadName: String,
+        val exe: String,
         val type: String,
+        val chainloader: String,
+        val canChainload: Boolean,
+        val canBeChainloaded: Boolean,
+        val chainloadName: String,
+        val bindings: List<String>,
         var isActive: Boolean
 ) {
-    companion object : () -> GW2AddOn, JsonDeserializer<GW2AddOn> {
+    companion object : () -> GW2AddOn, JsonDeserializer<GW2AddOn>, JsonSerializer<GW2AddOn> {
+
+        override fun serialize(src: GW2AddOn?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+            return JsonObject()
+                    .build("name", JsonPrimitive(src?.name))
+                    .build("url",JsonPrimitive(src?.url))
+                    .build("info",JsonPrimitive(src?.info))
+                    .build("md5",JsonPrimitive(src?.md5))
+                    .build("exe",JsonPrimitive(src?.exe))
+                    .build("type",JsonPrimitive(src?.type))
+                    .build("chainloadName",JsonPrimitive(src?.chainloadName))
+                    .build("chainloader",JsonPrimitive(src?.chainloader))
+                    .build("canChainload",JsonPrimitive(src?.canChainload))
+                    .build("canBeChainloaded",JsonPrimitive(src?.canBeChainloaded))
+                    .build("bindings", JsonArray().append(src?.bindings))
+        }
 
         override fun deserialize(json: JsonElement?,
                                  typeOfT: Type?,
@@ -23,18 +43,23 @@ data class GW2AddOn(
             val jsonObject = json?.asJsonObject!!
 
             return GW2AddOn(
-                    jsonObject["name"].asString,
-                    jsonObject["url"].asString,
-                    jsonObject["info"].asString,
-                    jsonObject["md5"].asString,
-                    jsonObject["chainloadName"].asString,
-                    jsonObject["type"].asString,
-                    false
+                    name = jsonObject["name"].asString,
+                    url = jsonObject["url"].asString,
+                    info = jsonObject["info"].asString,
+                    md5 = jsonObject["md5"].asString,
+                    chainloadName = jsonObject["chainloadName"].asString,
+                    chainloader = jsonObject["chainloader"].asString,
+                    canChainload = jsonObject["canChainload"].asBoolean,
+                    canBeChainloaded = jsonObject["canBeChainloaded"].asBoolean,
+                    type = jsonObject["type"].asString,
+                    exe = if (jsonObject.has("exe")) jsonObject["exe"].asString else "",
+                    bindings = jsonObject["bindings"].asJsonArray.map { it.asString },
+                    isActive = false
             )
         }
 
         override fun invoke(): GW2AddOn {
-            return GW2AddOn("","","","","","", false)
+            return GW2AddOn("","","","","","", "", false, false, "", listOf(), false)
         }
     }
 }

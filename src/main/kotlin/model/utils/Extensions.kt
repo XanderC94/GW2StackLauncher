@@ -1,20 +1,50 @@
 package model.utils
 
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
 import javafx.scene.control.TextField
 import model.json.JSONDumper
 import model.json.JSONParser
 import model.objects.GW2Argument
 import model.xml.XMLDumper
 import model.xml.XMLParser
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import java.io.File
+import java.io.InputStream
 import java.net.InetAddress
+import java.net.URL
 import java.nio.charset.Charset
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 
 fun Any.getResourceAsText(classpath: String) : String {
-    return this.javaClass.getResourceAsStream(classpath).reader().readText()
+    return this.getResourceAsStream(classpath).reader().readText()
+}
+
+fun Any.getResourceAsStream(classpath: String) : InputStream {
+    return this.javaClass.getResourceAsStream(classpath)
+}
+
+fun Any.getResource(classpath: String) : URL {
+    return this.javaClass.getResource(classpath)
+}
+
+fun Any.className() : String {
+    return this.javaClass.name
+}
+
+fun JsonObject.build(@NotNull property: String, @Nullable value: JsonElement) : JsonObject {
+    this.add(property, value)
+    return this
+}
+
+fun JsonArray.append(@Nullable values: List<String>?) : JsonArray {
+    values?.forEach { this.add(JsonPrimitive(it)) }
+    return this
 }
 
 inline fun <reified T > T.asJson() : String {

@@ -15,9 +15,9 @@ object Nomenclatures {
     }
 
     object Directory {
-        const val icon : String = "/icon/"
-        const val style : String = "/style/"
-        const val view : String = "/view/"
+        const val icon : String = "/icon"
+        const val style : String = "/style"
+        const val view : String = "/view"
     }
 
     object File {
@@ -29,12 +29,15 @@ object Nomenclatures {
         const val GW2LocalAddonsJson = "AddOns.local.json"
         const val GW2SLConfigJson = "Config.json"
         const val GW2SLStyle = "GW2StackLauncherStyle.css"
-        const val GW2SLScene = "GW2StackLauncherView.fxml"
+        const val GW2SLMainScene = "GW2SLMainView.fxml"
+        const val GW2SLSearchScene = "GW2SLMainView.fxml"
 
         const val GW2SLIcon = "GW2SL.png"
         const val GitHubLogo = "GitHubLogo.png"
         const val GW2Logo = "GW2Logo.jpg"
         const val GW2PoFLogo = "GW2PoFLogo.png"
+
+        const val defaultDLLName = "d3d9.dll"
     }
 
     object Component {
@@ -69,6 +72,8 @@ object Nomenclatures {
 
         const val addOnsWebView = "AddOnsWebView"
         const val webViewAnchor = "WebViewAnchor"
+        const val aboutAnchor = "AboutAnchor"
+        const val aboutTab = "AboutTab"
     }
 
     object Argument {

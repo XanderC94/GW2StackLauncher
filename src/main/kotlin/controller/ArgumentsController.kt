@@ -56,13 +56,11 @@ class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2Lo
 
         subscribe<ArgumentsRequest.SaveArgumentsSettings> {
 
-            val gw2UserDir = if (gw2 != null) {
-                gw2!!.configPath.value.replace('\\', '/')
-            } else {
-                SystemUtils.GW2UserDirectory()
-            }
+            val gw2ConfigDir =
+                    gw2?.configPath?.value?.replace('\\', '/')
+                            ?: SystemUtils.GW2UserDirectory()
 
-            val gw2LocalSettingsPath = "$gw2UserDir/${Nomenclatures.File.GW2LocalSettingsJson}"
+            val gw2LocalSettingsPath = "$gw2ConfigDir/${Nomenclatures.File.GW2LocalSettingsJson}"
 
             val activeOptionsAsList = availableArgs.values
                     .filter { it.isActive }
@@ -72,6 +70,8 @@ class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2Lo
                     }.toList()
 
             GW2LocalSettings(activeOptionsAsList).saveAsJson(gw2LocalSettingsPath)
+
+            log.info("Setting.json saved!")
         }
     }
 
@@ -111,9 +111,9 @@ class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2Lo
 
             initViewElements()
 
-        } else {
-            activeArgs = items
         }
+
+        activeArgs = items
 
     }
 
