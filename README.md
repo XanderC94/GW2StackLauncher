@@ -23,7 +23,7 @@ Selecting one of them will display on the integrated [JxBrowser](https://www.tea
 the application web-page/github repository. Each plugin may be toggled similarly to the arguments.
 **NOTE**: Each plugin will be installed, organized and renamed accordingly for chain-loading when 
 clicking on the "Run Guild Wars 2" button. Moreover, as a key feature of this application, 
-add-ons will be updated at each launch new launch (**if possible**).
+add-ons will be updated each new launch (**if possible**).
 
 * **About**: Guess what it does? It display this very ReadMe. 
 
