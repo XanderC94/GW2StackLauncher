@@ -36,18 +36,18 @@ class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2Lo
         }
 
         subscribe<ArgumentsRequest.UpdateArgumentStatus> {
-            if (availableArgs.containsKey(it.option)) {
-                availableArgs[it.option]!!.isActive = it.isActive
+            if (availableArgs.containsKey(it.id)) {
+                availableArgs[it.id]!!.isActive = it.isActive
                 fire(ArgumentsRequest.GetActiveArguments())
             }
         }
 
         subscribe<ArgumentsRequest.UpdateArgumentValue> {
-            if (availableArgs.containsKey(it.option) &&
-                    availableArgs[it.option]!!.hasValue &&
-                        availableArgs[it.option]!!.isActive) {
+            if (availableArgs.containsKey(it.id) &&
+                    availableArgs[it.id]!!.hasValue &&
+                        availableArgs[it.id]!!.isActive) {
 
-                availableArgs[it.option]!!.value = it.text
+                availableArgs[it.id]!!.value = it.text
 
             }
 

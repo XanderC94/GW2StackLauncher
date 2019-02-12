@@ -55,7 +55,6 @@ class ValuesController : ViewController(), GW2Dipper {
         runAsync {
 
             val addresses = serv.resolve()
-//            fire(ValuesEvent.ArgValues(request, id, addresses.map { it.hostAddress to 0}))
             addresses.parallelStream().forEach {
                 val p = it.hostAddress to it.RTT(500)
                 fire(ValuesEvent.ArgValue(request, id, p))

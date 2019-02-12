@@ -112,3 +112,12 @@ fun TextField.isStatusCorrect(last: GW2Argument) : Boolean {
             (this.text.isEmpty() && !last.isActive ||
                     !this.text.isEmpty() && last.isActive)
 }
+
+
+fun File.rename(to: String) : Boolean {
+    return if (to.isFile()) {
+        this.renameTo(to.asFile())
+    } else {
+        false
+    }
+}

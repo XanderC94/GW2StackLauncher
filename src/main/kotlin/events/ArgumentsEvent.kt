@@ -1,13 +1,12 @@
 package events
 
 import model.objects.GW2Argument
-import java.nio.file.Path
 
 object ArgumentsRequest {
 
-    class LoadAvailableArguments(val path: Path) : GenericRequest()
+    class LoadAvailableArguments(val path: String) : GenericRequest()
 
-    class LoadActiveArguments(val path: Path) : GenericRequest()
+    class LoadActiveArguments(val path: String) : GenericRequest()
 
     class GetAvailableArguments : GenericRequest()
 
@@ -15,9 +14,9 @@ object ArgumentsRequest {
 
     class GetArgument(val id : String) : GenericRequest()
 
-    class UpdateArgumentStatus(val option: String, val isActive: Boolean) : GenericRequest()
+    class UpdateArgumentStatus(val id: String, val isActive: Boolean) : GenericRequest()
 
-    class UpdateArgumentValue(val option: String, val text: String) : GenericRequest()
+    class UpdateArgumentValue(val id: String, val text: String) : GenericRequest()
 
     class SaveArgumentsSettings : GenericRequest()
 }

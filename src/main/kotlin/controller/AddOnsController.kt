@@ -31,6 +31,17 @@ class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAdd
 
                 availableAddOns[it.id]!!.isActive = it.status
 
+                if (availableAddOns[it.id]!!.isActive) {
+                    availableAddOns[it.id]!!.bindings
+                            .filter { availableAddOns.containsKey(it) }
+                            .filter { !availableAddOns[it]!!.isActive }
+                            .forEach { availableAddOns[it]!!.isActive = true }
+                } else {
+                    availableAddOns.values
+                            .filter { addOn -> addOn.bindings.contains(it.id)}
+                            .forEach { addOn -> addOn.isActive = false }
+                }
+
                 fire(AddOnsRequest.GetActiveAddOns())
             }
         }
