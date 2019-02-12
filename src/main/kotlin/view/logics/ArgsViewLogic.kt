@@ -8,13 +8,13 @@ import javafx.event.EventHandler
 import javafx.scene.control.ListView
 import model.objects.GW2Argument
 import tornadofx.*
-import view.GW2StackLauncherView
+import view.GW2SLMainView
 import view.components.ListViewItem
 
-class ArgsViewLogic(private val view: GW2StackLauncherView) {
+class ArgsViewLogic(private val view: GW2SLMainView) {
 
-    private var lastClickedArg = GW2Argument()
-    private val emptyObsListOfPair = {listOf<Pair<String, String>>().observable()}
+    private var lastClickedAvail = GW2Argument()
+    private var disableTabbing = false
 
     init {
         initHandlers()
@@ -27,9 +27,7 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
             availableArgsList.onMouseClicked = EventHandler {
                 val item = availableArgsList.selectedItem
                 if (item!= null) {
-//                    checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
-                    fire(ViewRequest.CheckArgumentTextField(lastClickedArg))
-//                    argValueField.clear()
+                    fire(ViewRequest.CheckArgumentTextField(lastClickedAvail))
                     fire(ArgumentsRequest.GetArgument(item.first))
                 }
             }
@@ -37,34 +35,30 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
             availableArgsList.setCellFactory {
                 ListViewItem(onToggle = { id, status ->
 
-//                    checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
-                    fire(ViewRequest.CheckArgumentTextField(lastClickedArg))
-                    selectAndFocus(availableArgsList, id)
+                    fire(ViewRequest.CheckArgumentTextField(lastClickedAvail))
+                    availableArgsList.selectAndFocus(id)
                     fire(ArgumentsRequest.UpdateArgumentStatus(id, status))
-                    fire(ArgumentsRequest.GetArgument(id))
                 })
             }
 
             activeArgsList.onMouseClicked = EventHandler {
                 val item = activeArgsList.selectedItem
                 if (item != null) {
-                    val option = item.split(":").first()
+                    disableTabbing = true
+                    availableArgsList.selectFocusAndScroll(item.split(":").first())
                     argumentsTab.select()
-                    selectFocusAndScroll(availableArgsList, option)
-                    fire(ArgumentsRequest.GetArgument(option))
                 }
             }
 
             argumentsTab.setOnSelectionChanged {
 
-                if (!argumentsTab.isSelected
-//                        && checkFieldStatusAndMaybeFire(argValueField, lastClickedArg)
-                ) {
-//                    hideOptionValueHeader()
-                    fire(ViewRequest.CheckArgumentTextField(lastClickedArg))
+                if (!argumentsTab.isSelected) {
+                    fire(ViewRequest.CheckArgumentTextField(lastClickedAvail))
                     fire(ViewRequest.HideArgumentValueHeader())
-                } else if (argumentsTab.isSelected) {
-                    selectFocusAndScroll(availableArgsList, lastClickedArg.name)
+                } else if (argumentsTab.isSelected && !disableTabbing) {
+                    availableArgsList.selectFocusAndScroll(lastClickedAvail.name)
+                } else {
+                    disableTabbing = false
                 }
             }
         }
@@ -90,8 +84,7 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
             subscribe<ArgumentsEvent.Argument> {
                 when(it.from) {
                     is ArgumentsRequest.GetArgument -> {
-
-                        lastClickedArg = it.argument
+                        lastClickedAvail = it.argument
                     }
                 }
             }
@@ -104,17 +97,17 @@ class ArgsViewLogic(private val view: GW2StackLauncherView) {
         }
     }
 
-    private fun selectAndFocus(list: ListView<Pair<String, Boolean>>, item: String) : Int{
-        val idx = list.items.indexOfFirst { it.first == item }
-        list.selectionModel.select(idx)
-        list.focusModel.focus(idx)
+    private fun ListView<Pair<String, Boolean>>.selectAndFocus(to: String) : Int{
+        val idx = this.items.indexOfFirst { it.first == to }
+        this.selectionModel.select(idx)
+        this.focusModel.focus(idx)
+        view.fire(ArgumentsRequest.GetArgument(to))
         return idx
     }
 
-    private fun selectFocusAndScroll(list: ListView<Pair<String, Boolean>>, item: String) : Int {
-        val idx = selectAndFocus(list, item)
-        list.scrollTo(if (idx > 1) idx - 1 else idx)
+    private fun ListView<Pair<String, Boolean>>.selectFocusAndScroll(to: String) : Int {
+        val idx = this.selectAndFocus(to)
+        this.scrollTo(if (idx > 1) idx - 1 else idx)
         return idx
     }
-
 }

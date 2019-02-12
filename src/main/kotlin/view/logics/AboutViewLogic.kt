@@ -1,45 +1,20 @@
 package view.logics
 
-import events.AboutRequest
+import events.BrowserRequest
 import javafx.event.EventHandler
-import javafx.geometry.Pos
 import model.utils.Nomenclatures
-import tornadofx.*
-import view.GW2StackLauncherView
-import java.net.URL
+import view.GW2SLMainView
 
-class AboutViewLogic(view: GW2StackLauncherView) {
-
-    private val dim = 64.0
-
-    val gw2Link = view.imageview {
-//        image = Image(this.javaClass
-//                .getResourceAsStream(Directory.icon + File.GW2PoFLogo))
-        isPreserveRatio = true
-        fitHeight = dim
-        fitWidth = dim
-    }
-
-    val githubLink = view.imageview {
-//        image = Image(this.javaClass
-//                .getResourceAsStream(Directory.icon + File.GitHubLogo))
-        isPreserveRatio = true
-        fitHeight = dim
-        fitWidth = dim
-        onMouseClicked = EventHandler {
-            view.fire(AboutRequest.OpenLink(URL(Nomenclatures.URL.repo)))
-        }
-    }
+class AboutViewLogic(view: GW2SLMainView) {
 
     init {
         with(view) {
 
-            iconsFlowPane.alignment = Pos.BASELINE_RIGHT
-
-            iconsFlowPane.hgap = 30.0
-
-            iconsFlowPane.add(gw2Link)
-            iconsFlowPane.add(githubLink)
+            aboutTab.onSelectionChanged = EventHandler {
+                if (aboutTab.isSelected) {
+                    fire(BrowserRequest.LoadURL(Nomenclatures.URL.repo))
+                }
+            }
 
         }
     }

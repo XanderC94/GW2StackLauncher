@@ -7,12 +7,12 @@ import model.utils.Nomenclatures
 import model.utils.isStatusCorrect
 import model.utils.isValueSettable
 import tornadofx.*
-import view.GW2StackLauncherView
+import view.GW2SLMainView
 import view.utils.IPAndRTTConverter
 import view.utils.OptionValuesConversionMapper
 import view.utils.SystemPathConverter
 
-class ValueViewLogic(val view: GW2StackLauncherView) {
+class ValueViewLogic(val view: GW2SLMainView) {
 
     private var lastClickedArg = GW2Argument()
     private val emptyObsListOfPair = {listOf<Pair<String, String>>().observable()}

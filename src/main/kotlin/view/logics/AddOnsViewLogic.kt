@@ -2,17 +2,19 @@ package view.logics
 
 import events.AddOnsEvent
 import events.AddOnsRequest
+import events.BrowserRequest
 import javafx.event.EventHandler
 import javafx.scene.control.ListView
 import model.objects.GW2AddOn
 import tornadofx.*
-import view.GW2StackLauncherView
+import view.GW2SLMainView
 import view.components.ListViewItem
 
 
-class AddOnsViewLogic(val view: GW2StackLauncherView) {
+class AddOnsViewLogic(val view: GW2SLMainView) {
 
-    private var lastClickedAddOn : GW2AddOn = GW2AddOn()
+    private var lastClickedAvail = GW2AddOn()
+    private var disableTabbing = false
 
     init {
         handlers()
@@ -32,38 +34,41 @@ class AddOnsViewLogic(val view: GW2StackLauncherView) {
             activeAddOnsList.onMouseClicked = EventHandler {
                 val item = activeAddOnsList.selectedItem
                 if (item != null) {
+                    disableTabbing = true
+                    availableAddOnsList.selectFocusAndScroll(to = item)
                     addOnsTab.select()
-                    selectFocusAndScroll(availableAddOnsList, item)
-                    fire(AddOnsRequest.GetAddOn(item))
                 }
             }
 
             availableAddOnsList.setCellFactory {
                 ListViewItem(onToggle = { id, status ->
-                    selectAndFocus(availableArgsList, id)
                     fire(AddOnsRequest.UpdateAddOnStatus(id, status))
-                    fire(AddOnsRequest.GetAddOn(id))
+                    availableAddOnsList.selectAndFocus(to = id)
                 })
             }
 
             addOnsTab.onSelectionChanged = EventHandler {
-                if (addOnsTab.isSelected) {
-                    selectFocusAndScroll(availableAddOnsList, lastClickedAddOn.name)
+                val item = availableAddOnsList.selectedItem
+                if (addOnsTab.isSelected && !disableTabbing) {
+                    availableAddOnsList.selectFocusAndScroll(to = lastClickedAvail.name)
+                } else {
+                    disableTabbing = false
                 }
             }
         }
     }
 
-    private fun selectAndFocus(list: ListView<Pair<String, Boolean>>, item: String) : Int{
-        val idx = list.items.indexOfFirst { it.first == item }
-        list.selectionModel.select(idx)
-        list.focusModel.focus(idx)
+    private fun ListView<Pair<String, Boolean>>.selectAndFocus(to: String) : Int{
+        val idx = this.items.indexOfFirst { it.first == to }
+        this.selectionModel.select(idx)
+        this.focusModel.focus(idx)
+        view.fire(AddOnsRequest.GetAddOn(to))
         return idx
     }
 
-    private fun selectFocusAndScroll(list: ListView<Pair<String, Boolean>>, item: String) : Int {
-        val idx = selectAndFocus(list, item)
-        list.scrollTo(if (idx > 1) idx - 1 else idx)
+    private fun ListView<Pair<String, Boolean>>.selectFocusAndScroll(to: String) : Int {
+        val idx = this.selectAndFocus(to)
+        this.scrollTo(if (idx > 1) idx - 1 else idx)
         return idx
     }
 
@@ -73,16 +78,18 @@ class AddOnsViewLogic(val view: GW2StackLauncherView) {
                 when(it.from) {
                     is AddOnsRequest.GetAvailableAddOns -> {
                         availableAddOnsList.items = it.addOns.map { it.name to it.isActive }
-                                .sortedBy { it.first }.observable()
+                                .sortedBy { it.first.toLowerCase() }.observable()
                     }
                     is AddOnsRequest.GetActiveAddOns -> {
-                        activeAddOnsList.items = it.addOns.map { it.name }.sorted().observable()
+                        activeAddOnsList.items = it.addOns.map { it.name }
+                                .sortedBy { it.toLowerCase() }.observable()
                     }
                 }
             }
 
             subscribe<AddOnsEvent.AddOn> {
-                lastClickedAddOn = it.addOn
+                lastClickedAvail = it.addOn
+                fire(BrowserRequest.LoadURL(it.addOn.info))
             }
         }
     }

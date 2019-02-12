@@ -1,9 +1,9 @@
 package view.logics
 
 import events.GFXEvent
-import view.GW2StackLauncherView
+import view.GW2SLMainView
 
-class GFXViewLogic(private val view : GW2StackLauncherView) {
+class GFXViewLogic(private val view : GW2SLMainView) {
 
     init {
         with(view) {

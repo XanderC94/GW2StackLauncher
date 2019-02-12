@@ -94,6 +94,8 @@
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-border-color: #cccccc;
+    -fx-text-fill: #333333;
+    -fx-highlight-text-fill: #333333;
 }
 
 /** TEXT-AREA *******************************************************************/
@@ -189,6 +191,15 @@
     -fx-text-fill: black;
     -fx-highlight-text-fill: black;
     -fx-background-insets: 0;
+}
+
+/** CHECK-BOX *******************************************************************/
+
+.check-box > .box {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #f1f1f1;
+    -fx-border-color: #333333;
 }
 
 /** CHOICE-BOX *******************************************************************/

@@ -12,10 +12,12 @@ import javafx.scene.layout.FlowPane
 import model.utils.Nomenclatures.Component
 import model.utils.Nomenclatures.Directory
 import model.utils.Nomenclatures.File
+import model.utils.getResourceAsStream
 import tornadofx.*
+import view.components.KeyAction
 import view.logics.*
 
-class GW2StackLauncherView : View("GW2 Stack Launcher") {
+class GW2SLMainView : View("GW2 Stack Launcher") {
 
     override val root: BorderPane by fxml()
 
@@ -25,6 +27,7 @@ class GW2StackLauncherView : View("GW2 Stack Launcher") {
 
     val argumentsTab : Tab by fxid(Component.optionTab)
     val addOnsTab : Tab by fxid(Component.addOnsTab)
+    val aboutTab : Tab by fxid(Component.aboutTab)
 
     /* SPLIT PANES */
     /* OPTIONS */
@@ -61,6 +64,7 @@ class GW2StackLauncherView : View("GW2 Stack Launcher") {
 
     /* ABOUT */
     val iconsFlowPane : FlowPane by fxid(Component.iconsFlowPane)
+    val aboutAnchor : AnchorPane by fxid(Component.aboutAnchor)
 
     /* RUN */
 
@@ -83,7 +87,11 @@ class GW2StackLauncherView : View("GW2 Stack Launcher") {
             fire(AppRequest.CloseApplication(1))
         }
 
-        val icon = this.javaClass.getResourceAsStream(Directory.icon + File.GW2SLIcon)
+        root.onKeyPressed = EventHandler {
+            KeyAction(this.primaryStage, it)
+        }
+
+        val icon = this.getResourceAsStream("${Directory.icon}/${File.GW2SLIcon}")
 
         currentStage?.icons?.add(Image(icon))
 
