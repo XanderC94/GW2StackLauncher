@@ -88,6 +88,8 @@ Some AddOns are "officially" permitted by ArenaNet others aren't (for now). So u
 
 ### TeamDev
 
-This project make use of Jx Browser library by TeamDev. Their software is proprietary and no source code can be or will be provided.
-This project use their libraries under a Perpetual License for free and open-source software only. 
-Any fork, copy, modification of this project that will still use Jx Browser will need to request such License or pay for one.
+GW2StackLauncher uses JxBrowser http://www.teamdev.com/jxbrowser, which is a proprietary software, 
+owned by TeamDev Ltd. The use of JxBrowser is governed by JxBrowser Product License Agreement 
+http://www.teamdev.com/jxbrowser-licence-agreement. You may not use JxBrowser separately from 
+GW2StackLauncher without a separate license from TeamDev Ltd. Use of JxBrowser as part of GW2StackLauncher
+in any commercial software requires a commercial license from TeamDev Ltd.
