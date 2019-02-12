@@ -1,6 +1,6 @@
 # GW2StackLauncher
 
-Straight-Forward and Minimal Launcher for Guild Wars 2 with its addons and command-line parameters.
+Straight-Forward and Minimal Launcher for [Guild Wars 2](https://www.guildwars2.com/en/) by ArenaNet with its addons and command-line parameters.
 
 ## What it does
 
@@ -21,20 +21,25 @@ on the right side of the Argument, inside the list visible on the left side of t
 * **AddOns**: This tab contains a list of the most used AddOns for Guild Wars 2. 
 Selecting one of them will display on the integrated [Jx Browser](https://www.teamdev.com/jxbrowser) 
 the application web-page/github repository. Each plugin may be toggled similarly to the arguments.
-**NOTE**: Each plugin will be installed, organized and renamed accordingly for chain-loading on by 
+**NOTE**: Each plugin will be installed, organized and renamed accordingly for chain-loading when 
 clicking on the "Run Guild Wars 2" button. Moreover, as a key feature of this application, 
-add-ons will be updated at each launch new launch (if possible).
+add-ons will be updated at each launch new launch (**if possible**).
 
 * **About**: Guess what it does? It display this very ReadMe. 
 
 Other than these tabs there is a bottom component where the GW2 Install Location is displayed 
 and the button "Run Guild Wars 2" can be found.
 
-#### Browser Key-Bindings
+#### Key-Bindings
 
-* **RELOAD**:       F5
-* **FORWARD**:      ALT + →
-* **BACKWARD**:     ALT + ←
+| Command                   | Key-Bind  |   Component |
+|:---                       |:---       |:---:        |
+|**BACKWARD**               | ALT + ←   | BROWSER     |
+|**RELOAD**                 | F5        | BROWSER     |
+|**FORWARD**                | ALT + →   | BROWSER     |
+|**FINDER**                 | CTRL + F  | BROWSER     |
+|**CLEAR FINDINGS**         | ESC       | BROWSER     |
+|**TOGGLE FULL-SCREEN**     | F11       | APP         |
 
 ## FAQ
 
@@ -49,7 +54,7 @@ and the button "Run Guild Wars 2" can be found.
         * The GFX file where GW2 Installation and Graphics Settings are located
         * An AddOns.local.json where info of the locally installed plugins are stored
         
-        It doesn't touch whatever .dat file present.
+        It doesn't touch whatever .dat file is present.
 
 * Q: Why this tool does HTTP calls?
     * A: 'cause updated Arguments and AddOns are hosted [here](https://github.com/XanderC94/GW2SLResources)
