@@ -8,5 +8,7 @@ object BrowserRequest {
 }
 
 object BrowserEvent {
-
+    class BrowserClosed(
+            override val from: Request
+    ) : GenericEvent()
 }

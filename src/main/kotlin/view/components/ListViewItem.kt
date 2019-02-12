@@ -13,6 +13,9 @@ class ListViewItem(val onToggle: (String, Boolean) -> Unit) : ListCell<Pair<Stri
             this.text = if (this.isSelected) ToggleStatus.ON() else ToggleStatus.OFF()
             onToggle(label.text, this.isSelected)
         }
+
+        maxWidth = 40.0
+        minWidth = 40.0
     }
 
     val pane: BorderPane = borderpane {

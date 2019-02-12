@@ -2,6 +2,8 @@ package controller
 
 import controller.networking.HTTP
 import events.AppRequest
+import events.BrowserEvent
+import events.BrowserRequest
 import javafx.application.Platform
 import model.objects.*
 import model.utils.*
@@ -29,6 +31,8 @@ class AppController(val parameters: Map<String, String>) : Controller() {
     }
 
     class Source(val type: SourceType, val location: String)
+
+    private var exitCode : Int = 0
 
     init {
 
@@ -60,15 +64,20 @@ class AppController(val parameters: Map<String, String>) : Controller() {
         }
 
         subscribe<AppRequest.CloseApplication> {
-            try {
-                Platform.exit()
+            exitCode = it.exitCode
 
-            } catch (ex: Exception) {}
-
-            exitProcess(it.exitCode)
+            fire(BrowserRequest.CloseBrowser())
         }
 
-        log.info("${this.javaClass.simpleName} READY")
+        subscribe<BrowserEvent.BrowserClosed> {
+            try {
+                Platform.exit()
+            } catch (ex: Throwable) { } finally {
+                exitProcess(exitCode)
+            }
+        }
+
+        log.info("${this.className()} READY")
     }
 
     private fun loadAppConfig() : Pair<GW2Arguments, GW2AddOns> {
@@ -125,6 +134,8 @@ class AppController(val parameters: Map<String, String>) : Controller() {
             Optional.of(gw2GFXSettingsFile.readText().fromXML())
 
         } else {
+
+            log.log(Level.SEVERE, "No GFX Settings found. Run GW2 at least once.")
 
             fire(AppRequest.CloseApplication(-9))
 

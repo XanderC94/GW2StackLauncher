@@ -2,7 +2,7 @@ package view.logics
 
 import com.teamdev.jxbrowser.chromium.*
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView
-import events.AppRequest
+import events.BrowserEvent
 import events.BrowserRequest
 import events.SearchRequest
 import javafx.event.EventHandler
@@ -82,11 +82,15 @@ class BrowserViewLogic (val view: GW2SLMainView) {
                 browser.findText(SearchParams(it.string, it.matchCase, it.next)) {}
             }
 
-            subscribe<AppRequest.CloseApplication> {
+            subscribe<BrowserRequest.CloseBrowser> {
                 try {
                     browser.stop()
                     browser.dispose()
-                } catch (ex: Exception) {}
+                } catch (ex: Throwable) {
+
+                } finally {
+                    fire(BrowserEvent.BrowserClosed(it))
+                }
             }
         }
     }
