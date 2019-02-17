@@ -77,6 +77,10 @@ class DisplayName(
         @JacksonXmlProperty(localName = "Value", isAttribute = true)
         get() = field
 
+    override fun toString(): String {
+        return value
+    }
+
 }
 
 class VersionName(
@@ -86,6 +90,10 @@ class VersionName(
     val value: String = value
         @JacksonXmlProperty(localName = "Value", isAttribute = true)
         get() = field
+
+    override fun toString(): String {
+        return value
+    }
 
 }
 
@@ -97,6 +105,10 @@ class InstallPath(
         @JacksonXmlProperty(localName = "Value", isAttribute = true)
         get() = field
 
+    override fun toString(): String {
+        return value
+    }
+
 }
 
 class ConfigPath(
@@ -106,6 +118,11 @@ class ConfigPath(
     val value: String = value
         @JacksonXmlProperty(localName = "Value", isAttribute = true)
         get() = field
+
+    override fun toString(): String {
+        return value
+    }
+
 }
 
 class Executable(
@@ -116,6 +133,10 @@ class Executable(
         @JacksonXmlProperty(localName = "Value", isAttribute = true)
         get() = field
 
+    override fun toString(): String {
+        return value
+    }
+
 }
 
 class ExecCmd(
@@ -125,6 +146,10 @@ class ExecCmd(
     val value: String = value
         @JacksonXmlProperty(localName = "Value", isAttribute = true)
         get() = field
+
+    override fun toString(): String {
+        return value
+    }
 
 }
 
@@ -226,6 +251,11 @@ class Enum(
     val value: String = value
         @JacksonXmlProperty(localName = "EnumValue", isAttribute = true)
         get() = field
+
+    override fun toString(): String {
+        return value
+    }
+
 }
 
 class Range(

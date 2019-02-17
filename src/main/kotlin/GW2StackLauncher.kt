@@ -25,6 +25,7 @@ class GW2StackLauncher: App(GW2SLMainView::class) {
     }
 
     private fun createAppEnvironment() {
+
         val dataDir = SystemUtils.dataDir()
 
         if (dataDir != null && dataDir.isDir()) {

@@ -4,6 +4,7 @@ import events.AddOnsEvent
 import events.AddOnsRequest
 import model.objects.GW2AddOn
 import model.objects.GW2AddOns
+import model.objects.GW2LocalAddOn
 import model.objects.GW2LocalAddOns
 import model.utils.Nomenclatures
 import model.utils.SystemUtils
@@ -14,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap
 class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAddOns> {
 
     private var availableAddOns: Map<String, GW2AddOn> = ConcurrentHashMap()
-    private var activeOptions: GW2LocalAddOns = GW2LocalAddOns()
+    private var activeAddOns: GW2LocalAddOns = GW2LocalAddOns()
 
     init {
         subscribe<AddOnsRequest.GetAvailableAddOns> {
@@ -56,13 +57,17 @@ class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAdd
 
             runAsync {
 
-                val asList = availableAddOns.values.filter { it.isActive }.map { it.name }
+                val asList = availableAddOns.values.filter { it.isActive }.map {
+                    GW2LocalAddOn(it.name, "")
+                }
 
                 val gw2LocalAddOnsPath = "${SystemUtils.gw2slDir()!!}/${Nomenclatures.File.GW2LocalAddonsJson}"
 
                 GW2LocalAddOns(asList).saveAsJson(gw2LocalAddOnsPath)
 
                 log.info("AddOns.local.json saved!")
+
+                fire(AddOnsRequest.DownloadAndUpdateAddOns(availableAddOns.values.toList(), activeAddOns.addOns))
 
             }
         }
@@ -81,8 +86,8 @@ class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAdd
 
         availableAddOns = ConcurrentHashMap(availableAddOns)
 
-        if (activeOptions.addOns.isNotEmpty()) {
-            setActiveItems(activeOptions)
+        if (activeAddOns.addOns.isNotEmpty()) {
+            setActiveItems(activeAddOns)
         }
     }
 
@@ -90,15 +95,15 @@ class AddOnsController : ViewController(), ItemController<GW2AddOns, GW2LocalAdd
         if (availableAddOns.isNotEmpty()) {
 
             items.addOns.filter {
-                availableAddOns.containsKey(it)
+                availableAddOns.containsKey(it.name)
             }.forEach {
-                availableAddOns[it]!!.isActive = true
+                availableAddOns[it.name]!!.isActive = true
             }
 
             initViewElements()
         }
 
-        activeOptions = items
+        activeAddOns = items
 
     }
 }

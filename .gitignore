@@ -31,3 +31,4 @@ hs_err_pid*
 /natives/
 /libs/
 /blob_storage/
+/src/libs/

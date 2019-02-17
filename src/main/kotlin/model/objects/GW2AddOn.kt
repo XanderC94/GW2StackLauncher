@@ -9,7 +9,7 @@ data class GW2AddOn(
         val name: String,
         val url: String,
         val info: String,
-        val md5: String,
+        val signature: String,
         val exe: String,
         val type: String,
         val chainloader: String,
@@ -26,7 +26,7 @@ data class GW2AddOn(
                     .build("name", JsonPrimitive(src?.name))
                     .build("url",JsonPrimitive(src?.url))
                     .build("info",JsonPrimitive(src?.info))
-                    .build("md5",JsonPrimitive(src?.md5))
+                    .build("signature",JsonPrimitive(src?.signature))
                     .build("exe",JsonPrimitive(src?.exe))
                     .build("type",JsonPrimitive(src?.type))
                     .build("chainloadName",JsonPrimitive(src?.chainloadName))
@@ -46,7 +46,7 @@ data class GW2AddOn(
                     name = jsonObject["name"].asString,
                     url = jsonObject["url"].asString,
                     info = jsonObject["info"].asString,
-                    md5 = jsonObject["md5"].asString,
+                    signature = jsonObject["signature"].asString,
                     chainloadName = jsonObject["chainloadName"].asString,
                     chainloader = jsonObject["chainloader"].asString,
                     canChainload = jsonObject["canChainload"].asBoolean,

@@ -1,6 +1,7 @@
 package events
 
 object AppRequest {
+    class RunGW2 : GenericRequest()
     class CloseApplication(val exitCode: Int) : GenericRequest()
     class InitViewElements : GenericRequest()
 }

@@ -5,8 +5,9 @@ import java.util.*
 object SystemUtils {
 
     const val appName = "GW2SL"
-    private val winAppData = System.getenv("APPDATA")
-    private val userHome = System.getProperty("user.home")
+    val winAppData = System.getenv("APPDATA")
+    val userHome = System.getProperty("user.home")
+    val userDownloadDir = "$userHome/Downloads"
     private val gw2WindowsUserDirectory = "${System.getenv("APPDATA")}/Guild Wars 2"
     private val osxAppData = "~/Library/Application Support/"
     private val gw2OSX64UserDirectory = "~/Library/Application Support/Guild Wars 2"
@@ -67,5 +68,4 @@ object SystemUtils {
     fun appWorkspace() : String {
         return System.getProperty("user.dir").replace('\\', '/')
     }
-
 }

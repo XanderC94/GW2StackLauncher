@@ -4,6 +4,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
+import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import model.json.JSONDumper
 import model.json.JSONParser
@@ -20,6 +21,7 @@ import java.nio.charset.Charset
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
+import javax.xml.bind.DatatypeConverter
 
 fun Any.getResourceAsText(classpath: String) : String {
     return this.getResourceAsStream(classpath).reader().readText()
@@ -37,6 +39,8 @@ fun Any.className() : String {
     return this.javaClass.name
 }
 
+//********************************************************************************************************************//
+
 fun JsonObject.build(@NotNull property: String, @Nullable value: JsonElement) : JsonObject {
     this.add(property, value)
     return this
@@ -46,6 +50,8 @@ fun JsonArray.append(@Nullable values: List<String>?) : JsonArray {
     values?.forEach { this.add(JsonPrimitive(it)) }
     return this
 }
+
+//********************************************************************************************************************//
 
 inline fun <reified T > T.asJson() : String {
     return JSONDumper.asString(this)
@@ -63,6 +69,14 @@ inline fun <reified T > T.saveAsXML(path: String) {
     XMLDumper.dump(this, Paths.get(path), Charset.defaultCharset())
 }
 
+//********************************************************************************************************************//
+
+fun File.rename(to: String) : Boolean {
+    return this.renameTo(to.asFile())
+}
+
+//********************************************************************************************************************//
+
 fun String.asPath() : Path {
     return Paths.get(this.replace("\\", "/"))
 }
@@ -79,6 +93,15 @@ fun String.isDir() : Boolean {
     return this.asFile().exists() && this.asFile().isDirectory
 }
 
+fun String.replaceIf(condition: () -> Boolean) : (Regex, String) -> String {
+
+    return if (condition()) {
+        { regex , replacement ->  this.replace(regex, replacement) }
+    } else {
+        { _, _ -> this }
+    }
+}
+
 inline fun <reified T > String.fromJson() : T {
     return JSONParser.parse(this)
 }
@@ -86,6 +109,8 @@ inline fun <reified T > String.fromJson() : T {
 inline fun <reified T > String.fromXML() : T {
     return XMLParser.parse(this)
 }
+
+//********************************************************************************************************************//
 
 /**
  * Get RoundTripTime to the specified INetAddress with the given timeout
@@ -101,6 +126,8 @@ fun InetAddress.RTT(timeout:Int) : Long {
 
 }
 
+//********************************************************************************************************************//
+
 fun TextField.isValueSettable(last: GW2Argument, maxChars:Int): Boolean {
     return this.text.isNotEmpty() &&
             this.text.length < maxChars
@@ -113,11 +140,24 @@ fun TextField.isStatusCorrect(last: GW2Argument) : Boolean {
                     !this.text.isEmpty() && last.isActive)
 }
 
-
-fun File.rename(to: String) : Boolean {
-    return if (to.isFile()) {
-        this.renameTo(to.asFile())
-    } else {
-        false
+fun ListView<Pair<String, Boolean>>.selectAndFocus(to: String, then : (String) -> Unit) : Int{
+    val idx = this.items.indexOfFirst { it.first == to }
+    if (idx > -1) {
+        this.selectionModel.select(idx)
+        this.focusModel.focus(idx)
+        then(to)
     }
+    return idx
+}
+
+fun ListView<Pair<String, Boolean>>.selectFocusAndScroll(to: String, then: (String) -> Unit) : Int {
+    val idx = this.selectAndFocus(to, then)
+    this.scrollTo(if (idx > 1) idx - 1 else idx)
+    return idx
+}
+
+//********************************************************************************************************************//
+
+fun ByteArray.toHex() : String {
+    return DatatypeConverter.printHexBinary(this)
 }

@@ -4,16 +4,15 @@ import com.google.gson.GsonBuilder
 import model.Mapper
 import model.objects.GW2AddOn
 import model.objects.GW2Argument
-import model.objects.GW2SLConfig
+import model.objects.GitHubAPISimple
 
 object JSONMapper : Mapper {
 
     private val gson = GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(GW2AddOn::class.java, GW2AddOn)
-            .registerTypeAdapter(GW2SLConfig::class.java, GW2SLConfig)
             .registerTypeAdapter(GW2Argument::class.java, GW2Argument)
-//            .registerTypeAdapter(GW2LocalAddOns::class.java, GW2LocalAddOns)
+            .registerTypeAdapter(GitHubAPISimple::class.java, GitHubAPISimple)
             .create()
 
     override fun <T> from(string: String, toClazz: Class<T>): T {

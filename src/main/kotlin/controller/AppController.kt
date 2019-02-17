@@ -9,7 +9,6 @@ import model.objects.*
 import model.utils.*
 import model.utils.Nomenclatures.File
 import tornadofx.*
-import java.util.*
 import java.util.logging.Level
 import kotlin.system.exitProcess
 
@@ -23,6 +22,7 @@ class AppController(val parameters: Map<String, String>) : Controller() {
     private val gfxController = GFXController()
     private val addOnsController = AddOnsController()
     private val aboutController = AboutController()
+    private val updateManager = UpdateManager()
 
     private val gw2UserDir = SystemUtils.GW2UserDirectory()
 
@@ -45,17 +45,18 @@ class AppController(val parameters: Map<String, String>) : Controller() {
 
             val gfx = loadGFXSettings()
 
-            if(gfx.isPresent) {
+            if(gfx != null) {
 
-                val gw2ConfigDir = gfx.get().application.configPath.value
+                val gw2ConfigDir = gfx.application.configPath.value
                 val localSettings = "$gw2ConfigDir/${File.GW2LocalSettingsJson}".asFile()
 
                 addLocals(from = localSettings, to = argsController, withDefault = GW2LocalSettings())
 
-                gfxController.setGFXSettings(gfx.get())
+                gfxController.setGFXSettings(gfx)
 
-                argsController.setGW2Application(gfx.get().application)
-                valuesController.setGW2Application(gfx.get().application)
+                argsController.setGW2Application(gfx.application)
+                valuesController.setGW2Application(gfx.application)
+                updateManager.setGW2Application(gfx.application)
             }
 
             val localAddOns = "${SystemUtils.gw2slDir()!!}/${File.GW2LocalAddonsJson}".asFile()
@@ -125,13 +126,13 @@ class AppController(val parameters: Map<String, String>) : Controller() {
         })
     }
 
-    private fun loadGFXSettings() : Optional<GW2GFXSettings> {
+    private fun loadGFXSettings() : GW2GFXSettings? {
 
         val gw2GFXSettingsFile = "$gw2UserDir/${File.GW2GFXSettings64XML}".asFile()
 
         return if (gw2GFXSettingsFile.exists()) {
 
-            Optional.of(gw2GFXSettingsFile.readText().fromXML())
+            gw2GFXSettingsFile.readText().fromXML()
 
         } else {
 
@@ -139,7 +140,7 @@ class AppController(val parameters: Map<String, String>) : Controller() {
 
             fire(AppRequest.CloseApplication(-9))
 
-            return Optional.empty()
+            return null
         }
     }
 
