@@ -1,25 +1,27 @@
 package events
 
-import model.objects.GW2AddOn
-import model.objects.GW2LocalAddOn
+import model.ontologies.gw2.AddOn
+import model.ontologies.gw2.LocalAddOn
+import model.ontologies.gw2.LocalAddOnsWrapper
 
 object AddOnsRequest{
     class GetAvailableAddOns: GenericRequest()
     class GetActiveAddOns: GenericRequest()
+    class UpdateActiveAddOns(val addOns: LocalAddOnsWrapper): GenericRequest()
     class UpdateAddOnStatus(val id: String, val status: Boolean): GenericRequest()
     class GetAddOn(val id: String): GenericRequest()
     class SaveAddOnsSettings : GenericRequest()
-    class DownloadAndUpdateAddOns(val addons: List<GW2AddOn>, val lastActive: List<GW2LocalAddOn>) : GenericRequest()
+    class DownloadAndUpdateAddOns(val addons: List<AddOn>, val lastActive: List<LocalAddOn>) : GenericRequest()
 }
 
 object AddOnsEvent {
     class AddOnsList(
             override val from: Request,
-            val addOns: List<GW2AddOn>
+            val addOns: List<model.ontologies.gw2.AddOn>
     ) : GenericEvent()
 
     class AddOn(
             override val from: Request,
-            val addOn: GW2AddOn
+            val addOn: model.ontologies.gw2.AddOn
     ) : GenericEvent()
 }

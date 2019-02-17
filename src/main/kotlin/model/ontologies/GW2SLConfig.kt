@@ -1,4 +1,4 @@
-package model.objects
+package model.ontologies
 
 data class GW2SLConfig(
         val argumentListLocation: String,

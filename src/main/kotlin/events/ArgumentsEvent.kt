@@ -1,7 +1,5 @@
 package events
 
-import model.objects.GW2Argument
-
 object ArgumentsRequest {
 
     class LoadAvailableArguments(val path: String) : GenericRequest()
@@ -25,12 +23,12 @@ object ArgumentsEvent {
 
     data class ArgumentsList(
             override val from: Request,
-            val options: List<GW2Argument>
+            val options: List<model.ontologies.gw2.Argument>
     ) : GenericEvent()
 
     data class Argument(
             override val from: Request,
-            val argument: GW2Argument
+            val argument: model.ontologies.gw2.Argument
     ) : GenericEvent()
 
 

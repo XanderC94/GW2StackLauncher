@@ -2,16 +2,16 @@ package model.json
 
 import com.google.gson.GsonBuilder
 import model.Mapper
-import model.objects.GW2AddOn
-import model.objects.GW2Argument
-import model.objects.GitHubAPISimple
+import model.ontologies.GitHubAPISimple
+import model.ontologies.gw2.AddOn
+import model.ontologies.gw2.Argument
 
 object JSONMapper : Mapper {
 
     private val gson = GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(GW2AddOn::class.java, GW2AddOn)
-            .registerTypeAdapter(GW2Argument::class.java, GW2Argument)
+            .registerTypeAdapter(AddOn::class.java, AddOn)
+            .registerTypeAdapter(Argument::class.java, Argument)
             .registerTypeAdapter(GitHubAPISimple::class.java, GitHubAPISimple)
             .create()
 

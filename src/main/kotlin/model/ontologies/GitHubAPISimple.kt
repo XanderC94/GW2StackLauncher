@@ -1,8 +1,10 @@
-package model.objects
+package model.ontologies
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import controller.networking.HTTP
+import extentions.fromJson
 import java.lang.reflect.Type
 
 data class GitHubAPISimple(
@@ -14,6 +16,10 @@ data class GitHubAPISimple(
 
         override fun invoke(): GitHubAPISimple {
             return GitHubAPISimple("","","")
+        }
+
+        fun from(url: String) : GitHubAPISimple {
+            return HTTP.GET(url).body()!!.string().fromJson()
         }
 
         override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): GitHubAPISimple {

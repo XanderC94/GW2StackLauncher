@@ -1,6 +1,6 @@
 package events
 
-import model.objects.InstallPath
+import model.ontologies.gw2.InstallPath
 
 object GFXRequest {
 

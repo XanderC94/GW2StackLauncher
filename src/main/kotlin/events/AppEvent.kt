@@ -1,7 +1,9 @@
 package events
 
+import model.ontologies.Overlay
+
 object AppRequest {
-    class RunGW2 : GenericRequest()
+    class RunGW2(val overlays : Map<String, Overlay>) : GenericRequest()
     class CloseApplication(val exitCode: Int) : GenericRequest()
     class InitViewElements : GenericRequest()
 }

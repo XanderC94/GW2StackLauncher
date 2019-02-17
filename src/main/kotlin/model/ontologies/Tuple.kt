@@ -1,4 +1,4 @@
-package model.objects
+package model.ontologies
 
 class Tuple(vararg val values: Any) {
 

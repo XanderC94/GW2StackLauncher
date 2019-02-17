@@ -1,9 +1,9 @@
 package events
 
-import model.objects.GW2Argument
+import model.ontologies.gw2.Argument
 
 object ViewRequest {
-    class CheckArgumentTextField(val arg: GW2Argument) : GenericRequest()
+    class CheckArgumentTextField(val arg: Argument) : GenericRequest()
     class HideArgumentValueHeader : GenericRequest()
 }
 
