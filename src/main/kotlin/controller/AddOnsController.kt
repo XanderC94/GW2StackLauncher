@@ -66,7 +66,7 @@ class AddOnsController : ViewController(), ItemController<AddOnsWrapper, LocalAd
                     LocalAddOn(it.name, "")
                 }
 
-                val gw2LocalAddOnsPath = "${SystemUtils.gw2slDir()!!}/${Nomenclatures.File.GW2LocalAddonsJson}"
+                val gw2LocalAddOnsPath = "${SystemUtils.gw2slDir()!!}/${Nomenclatures.Files.GW2LocalAddonsJson}"
 
                 LocalAddOnsWrapper(asList).saveAsJson(gw2LocalAddOnsPath)
 

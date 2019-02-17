@@ -60,7 +60,7 @@ class ArgumentsController : ViewController(), ItemController<ArgumentsWrapper, L
                     gw2?.configPath?.value?.replace('\\', '/')
                             ?: SystemUtils.GW2UserDirectory()
 
-            val gw2LocalSettingsPath = "$gw2ConfigDir/${Nomenclatures.File.GW2LocalSettingsJson}"
+            val gw2LocalSettingsPath = "$gw2ConfigDir/${Nomenclatures.Files.GW2LocalSettingsJson}"
 
             val activeOptionsAsList = availableArgs.values
                     .filter { it.isActive }

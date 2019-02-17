@@ -10,7 +10,7 @@ import model.ontologies.GW2SLConfig
 import model.ontologies.Source
 import model.ontologies.SourceType
 import model.ontologies.gw2.*
-import model.utils.Nomenclatures.File
+import model.utils.Nomenclatures.Files
 import model.utils.SystemUtils
 import tornadofx.*
 import java.util.logging.Level
@@ -47,7 +47,7 @@ class AppController(private val appConfig: GW2SLConfig) : Controller() {
             if(gfx != null) {
 
                 val gw2ConfigDir = gfx.application.configPath.value
-                val localSettings = "$gw2ConfigDir/${File.GW2LocalSettingsJson}".asFile()
+                val localSettings = "$gw2ConfigDir/${Files.GW2LocalSettingsJson}".asFile()
 
                 addLocals(from = localSettings, to = argsController, withDefault = LocalArguments())
 
@@ -59,8 +59,12 @@ class AppController(private val appConfig: GW2SLConfig) : Controller() {
                 gW2Runner.setGW2Application(gfx.application)
             }
 
-            val localAddOns = "${SystemUtils.gw2slDir()!!}/${File.GW2LocalAddonsJson}".asFile()
+            val localAddOns = "${SystemUtils.gw2slDir()!!}/${Files.GW2LocalAddonsJson}".asFile()
             addLocals(from = localAddOns, to = addOnsController, withDefault = LocalAddOnsWrapper())
+
+            if (appConfig.userAgent.isNotEmpty()) {
+                fire(BrowserRequest.SetUserAgent(appConfig.userAgent))
+            }
 
         }
 
@@ -118,7 +122,7 @@ class AppController(private val appConfig: GW2SLConfig) : Controller() {
 
     private fun loadGFXSettings() : GW2GFXSettings? {
 
-        val gw2GFXSettingsFile = "$gw2UserDir/${File.GW2GFXSettings64XML}".asFile()
+        val gw2GFXSettingsFile = "$gw2UserDir/${Files.GW2GFXSettings64XML}".asFile()
 
         return if (gw2GFXSettingsFile.exists()) {
 

@@ -24,7 +24,7 @@ class UpdateManager : ViewController(), GW2Dipper {
     private lateinit var gw2Bin64Dir : String
     private lateinit var gw2AddOnsDir : String
 
-    private val gw2LocalAddOnsPath = "${SystemUtils.gw2slDir()!!}/${Nomenclatures.File.GW2LocalAddonsJson}"
+    private val gw2LocalAddOnsPath = "${SystemUtils.gw2slDir()!!}/${Nomenclatures.Files.GW2LocalAddonsJson}"
 
     init {
 

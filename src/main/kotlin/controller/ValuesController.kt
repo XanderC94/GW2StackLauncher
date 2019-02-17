@@ -6,34 +6,34 @@ import events.ValuesEvent
 import events.ValuesRequest
 import extentions.RTT
 import model.ontologies.gw2.Application
-import model.utils.Nomenclatures.Argument
-import model.utils.Nomenclatures.HostName
+import model.utils.Nomenclatures.Arguments
+import model.utils.Nomenclatures.HostNames
 import java.io.File
 
 class ValuesController : ViewController(), GW2Dipper {
 
     private lateinit var gw2: Application
 
-    private val assetsServ = Service(Argument.assetserv,
-            listOf(HostName.gw2AssetServHostname)
+    private val assetsServ = Service(Arguments.assetserv,
+            listOf(HostNames.gw2AssetServHostname)
     )
 
-    private val authServ = Service(Argument.authserv,
-            listOf(HostName.gw2OAuthServ1Hostname, HostName.gw2OAuthServ2Hostname)
+    private val authServ = Service(Arguments.authserv,
+            listOf(HostNames.gw2OAuthServ1Hostname, HostNames.gw2OAuthServ2Hostname)
     )
 
     init {
         subscribe<ValuesRequest.GetArgValues> { request ->
             when(request.id) {
-                Argument.assetserv -> {
+                Arguments.assetserv -> {
 
                     resolveAndFire(request, assetsServ, request.id)
                 }
-                Argument.authserv -> {
+                Arguments.authserv -> {
 
                     resolveAndFire(request, authServ, request.id)
                 }
-                Argument.dat -> {
+                Arguments.dat -> {
 
                     val gw2Dir = File(gw2.installPath.value)
                     if (gw2Dir.isDirectory) {

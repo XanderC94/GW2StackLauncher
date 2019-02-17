@@ -2,25 +2,25 @@ package model.utils
 
 object Nomenclatures {
 
-    object URL {
+    object URLs {
         const val repo = "https://github.com/XanderC94/GW2StackLauncher"
         const val gw2site = "https://www.guildwars2.com/en/"
     }
 
-    object HostName {
+    object HostNames {
 
         const val gw2OAuthServ1Hostname = "auth1.101.ArenaNetworks.com"
         const val gw2OAuthServ2Hostname = "auth2.101.ArenaNetworks.com"
         const val gw2AssetServHostname = "assetcdn.101.ArenaNetworks.com"
     }
 
-    object Directory {
+    object Directories {
         const val icon : String = "/icon"
         const val style : String = "/style"
         const val view : String = "/view"
     }
 
-    object File {
+    object Files {
 
         const val GW2LocalSettingsJson = "Settings.json"
         const val GW2ArgumentsJson = "Arguments.json"
@@ -40,7 +40,7 @@ object Nomenclatures {
         const val defaultDLLName = "d3d9.dll"
     }
 
-    object Component {
+    object Components {
 
         const val gw2slTabPane = "GW2SLTabPane"
         const val overviewTab = "OverviewTab"
@@ -76,7 +76,7 @@ object Nomenclatures {
         const val aboutTab = "AboutTab"
     }
 
-    object Argument {
+    object Arguments {
         const val assetserv = "-assetsrv"
         const val authserv = "-authsrv"
         const val dat = "-dat"

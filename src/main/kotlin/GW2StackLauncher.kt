@@ -1,5 +1,6 @@
 import controller.AppController
-import extentions.*
+import extentions.asFile
+import extentions.isDir
 import model.ontologies.GW2SLConfig
 import model.utils.Nomenclatures
 import model.utils.SystemUtils
@@ -14,22 +15,34 @@ class GW2StackLauncher: App(GW2SLMainView::class) {
 
         super.init()
 
-        val appConfig : GW2SLConfig = if (
-                parameters.named.isNotEmpty() &&
-                parameters.named.containsKey("config-path") &&
-                parameters.named["config-path"]!!.isFile()) {
+        val localConfig = GW2SLConfig.from("/${Nomenclatures.Files.GW2SLConfigJson}", isClassPath = true)!!
 
-            parameters.named["config-path"]!!.asFile().readText().fromJson()
-        } else {
-            this.getResourceAsText("/${Nomenclatures.File.GW2SLConfigJson}").fromJson()
-        }
+        val extConfig = GW2SLConfig.from(parameters.named["config-path"])
 
-        importStylesheet(appConfig.mainStyle)
+        val coherentConfig = mergeConfigs(localConfig, extConfig)
+
+        importStylesheet(getStyleSheet(coherentConfig.mainStyle))
 
         createAppEnvironment()
 
-        appController = AppController(appConfig)
+        appController = AppController(coherentConfig)
 
+    }
+
+    private fun mergeConfigs(local: GW2SLConfig, ext: GW2SLConfig?) : GW2SLConfig {
+
+        if (ext == null) {
+            return local
+        }
+
+        return GW2SLConfig(
+                argumentListLocation = if (ext.argumentListLocation.isNotEmpty())
+                    ext.argumentListLocation else local.argumentListLocation,
+                addOnListLocation = if (ext.addOnListLocation.isNotEmpty())
+                    ext.addOnListLocation else local.addOnListLocation,
+                userAgent = if (ext.userAgent.isNotEmpty()) ext.userAgent else local.userAgent,
+                mainStyle = if (ext.mainStyle.isNotEmpty()) ext.mainStyle else local.mainStyle
+        )
     }
 
     private fun createAppEnvironment() {
@@ -44,6 +57,14 @@ class GW2StackLauncher: App(GW2SLMainView::class) {
                 "$appDir/tmp".asFile().mkdir()
 
             }
+        }
+    }
+
+    private fun getStyleSheet(location: String) : String {
+        return if (location.isNotEmpty()) {
+            location
+        } else {
+            "${Nomenclatures.Directories.style}/${Nomenclatures.Files.GW2SLStyle}"
         }
     }
 }

@@ -5,6 +5,7 @@ object BrowserRequest {
     class CloseBrowser : GenericRequest()
     class ClearWebView : GenericRequest()
     class DisplayWebView : GenericRequest()
+    class SetUserAgent(val userAgent: String) : GenericRequest()
 }
 
 object BrowserEvent {
