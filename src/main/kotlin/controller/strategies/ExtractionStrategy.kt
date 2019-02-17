@@ -1,8 +1,8 @@
-package controller
+package controller.strategies
 
 import controller.networking.HTTP
-import model.utils.asFile
-import model.utils.toHex
+import extentions.asFile
+import extentions.toHex
 import org.zeroturnaround.zip.ZipUtil
 import java.io.InputStream
 import java.security.MessageDigest
@@ -13,7 +13,7 @@ enum class ExtractionStrategy(
         val strategy : (InputStream, String, String) -> Unit) : (String, String, String) -> String {
 
     GW2Radial("GW2 Radial", "GW2Radial", { zip, dst, name ->
-        val bool = ZipUtil.unpack(zip, dst.asFile()) {
+        ZipUtil.unpack(zip, dst.asFile()) {
             when (it) {
                 "d3d9.dll" -> "bin64/$name"
                 else -> null
@@ -22,14 +22,14 @@ enum class ExtractionStrategy(
 
     }),
     D912PXY("d912pxy", "d912pxy", { zip, dst, name ->
-        val fname = name.split(".").first()
+        val fname = name.split("").first()
         val rgx = Regex("d912pxy\\/dll\\/release\\/.*\\..*")
         ZipUtil.unpack(zip, dst.asFile()) {
             when {
                 it.contains("shader") -> it
                 it.contains("pck") -> it
                 it.matches(rgx) ->
-                    "bin64/$fname.${it.split(".").last()}"
+                    "bin64/$fname.${it.split("").last()}"
                 else -> null
             }
         }
@@ -52,7 +52,7 @@ enum class ExtractionStrategy(
         unpackZipWithRootDir(zip, GW2Navi.name, dst, name)
     }),
     Default("", "", { zip, dst, name ->
-        val fname = name.split(".").first()
+        val fname = name.split("").first()
         ZipUtil.unpack(zip, dst.asFile()) { "addons/$fname/$it" }
     });
 
@@ -99,7 +99,7 @@ enum class ExtractionStrategy(
             ZipUtil.unpack(zip, dst.asFile()) {
                 when {
                     it.startsWith(root) -> {
-                        "addons/$fname/${it.replace(rootDeleterRgx, "")}"
+                        "addons/$fname/${it.replaceFirst(rootDeleterRgx, "")}"
                     }
                     else -> null
                 }

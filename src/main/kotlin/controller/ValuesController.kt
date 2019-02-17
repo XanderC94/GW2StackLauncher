@@ -4,10 +4,10 @@ import controller.networking.Service
 import events.GenericRequest
 import events.ValuesEvent
 import events.ValuesRequest
-import model.objects.Application
+import extentions.RTT
+import model.ontologies.gw2.Application
 import model.utils.Nomenclatures.Argument
 import model.utils.Nomenclatures.HostName
-import model.utils.RTT
 import java.io.File
 
 class ValuesController : ViewController(), GW2Dipper {
@@ -64,7 +64,7 @@ class ValuesController : ViewController(), GW2Dipper {
 
     override fun setGW2Application(gw2: Application) {
         this.gw2 = gw2
-        initViewElements()
+        onReady()
     }
 
 }

@@ -1,6 +1,6 @@
 package controller
 
-import model.objects.Application
+import model.ontologies.gw2.Application
 
 interface GW2Dipper {
 

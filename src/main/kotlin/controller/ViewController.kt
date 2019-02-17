@@ -1,11 +1,11 @@
 package controller
 
-import model.utils.className
+import extentions.className
 import tornadofx.*
 
 abstract class ViewController : Controller() {
 
-    protected open fun initViewElements() {
+    protected open fun onReady() {
         log.info("${this.className()} READY!")
     }
 

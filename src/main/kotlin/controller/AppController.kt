@@ -4,10 +4,14 @@ import controller.networking.HTTP
 import events.AppRequest
 import events.BrowserEvent
 import events.BrowserRequest
+import extentions.*
 import javafx.application.Platform
-import model.objects.*
-import model.utils.*
+import model.ontologies.GW2SLConfig
+import model.ontologies.Source
+import model.ontologies.SourceType
+import model.ontologies.gw2.*
 import model.utils.Nomenclatures.File
+import model.utils.SystemUtils
 import tornadofx.*
 import java.util.logging.Level
 import kotlin.system.exitProcess
@@ -23,14 +27,9 @@ class AppController(val parameters: Map<String, String>) : Controller() {
     private val addOnsController = AddOnsController()
     private val aboutController = AboutController()
     private val updateManager = UpdateManager()
+    private val gW2Runner = GW2Runner()
 
     private val gw2UserDir = SystemUtils.GW2UserDirectory()
-
-    enum class SourceType(val default: String) {
-        Arguments(File.GW2ArgumentsJson), AddOns(File.GW2AddOnsJson)
-    }
-
-    class Source(val type: SourceType, val location: String)
 
     private var exitCode : Int = 0
 
@@ -50,17 +49,18 @@ class AppController(val parameters: Map<String, String>) : Controller() {
                 val gw2ConfigDir = gfx.application.configPath.value
                 val localSettings = "$gw2ConfigDir/${File.GW2LocalSettingsJson}".asFile()
 
-                addLocals(from = localSettings, to = argsController, withDefault = GW2LocalSettings())
+                addLocals(from = localSettings, to = argsController, withDefault = LocalArguments())
 
                 gfxController.setGFXSettings(gfx)
 
                 argsController.setGW2Application(gfx.application)
                 valuesController.setGW2Application(gfx.application)
                 updateManager.setGW2Application(gfx.application)
+                gW2Runner.setGW2Application(gfx.application)
             }
 
             val localAddOns = "${SystemUtils.gw2slDir()!!}/${File.GW2LocalAddonsJson}".asFile()
-            addLocals(from = localAddOns, to = addOnsController, withDefault = GW2LocalAddOns())
+            addLocals(from = localAddOns, to = addOnsController, withDefault = LocalAddOnsWrapper())
 
         }
 
@@ -81,7 +81,7 @@ class AppController(val parameters: Map<String, String>) : Controller() {
         log.info("${this.className()} READY")
     }
 
-    private fun loadAppConfig() : Pair<GW2Arguments, GW2AddOns> {
+    private fun loadAppConfig() : Pair<ArgumentsWrapper, AddOnsWrapper> {
 
         val appConfig : GW2SLConfig = if (
                 parameters.isNotEmpty() &&
@@ -95,12 +95,12 @@ class AppController(val parameters: Map<String, String>) : Controller() {
 
         val args = runAsync {
             val argsSrc = Source(SourceType.Arguments, appConfig.argumentListLocation)
-            return@runAsync get<GW2Arguments>(from = argsSrc)
+            return@runAsync get<ArgumentsWrapper>(from = argsSrc)
         }
 
         val addOns = runAsync {
             val addOnsSrc = Source(SourceType.AddOns, appConfig.addOnListLocation)
-            return@runAsync get<GW2AddOns>(from = addOnsSrc)
+            return@runAsync get<AddOnsWrapper>(from = addOnsSrc)
         }
 
         return  args.get() to addOns.get()

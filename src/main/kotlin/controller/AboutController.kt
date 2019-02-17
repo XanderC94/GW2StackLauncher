@@ -9,7 +9,6 @@ class AboutController : ViewController() {
             hostServices.showDocument(it.url.toURI().toASCIIString())
         }
 
-//        fire(AppEvents.ControllerReady(NoRequest(), this.javaClass.simpleName))
-        initViewElements()
+        onReady()
     }
 }

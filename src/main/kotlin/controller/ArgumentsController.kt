@@ -2,20 +2,20 @@ package controller
 
 import events.ArgumentsEvent
 import events.ArgumentsRequest
-import model.objects.Application
-import model.objects.GW2Argument
-import model.objects.GW2Arguments
-import model.objects.GW2LocalSettings
+import extentions.saveAsJson
+import model.ontologies.gw2.Application
+import model.ontologies.gw2.Argument
+import model.ontologies.gw2.ArgumentsWrapper
+import model.ontologies.gw2.LocalArguments
 import model.utils.Nomenclatures
 import model.utils.SystemUtils
-import model.utils.saveAsJson
 import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("MapGetWithNotNullAssertionOperator")
-class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2LocalSettings>, GW2Dipper {
+class ArgumentsController : ViewController(), ItemController<ArgumentsWrapper, LocalArguments>, GW2Dipper {
 
-    private var availableArgs: Map<String, GW2Argument> = ConcurrentHashMap()
-    private var activeArgs: GW2LocalSettings = GW2LocalSettings()
+    private var availableArgs: Map<String, Argument> = ConcurrentHashMap()
+    private var activeArgs: LocalArguments = LocalArguments()
     private var gw2: Application? = null
 
     init {
@@ -69,21 +69,21 @@ class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2Lo
                         if (it.hasValue) "${it.name}:${it.value}" else it.name
                     }.toList()
 
-            GW2LocalSettings(activeOptionsAsList).saveAsJson(gw2LocalSettingsPath)
+            LocalArguments(activeOptionsAsList).saveAsJson(gw2LocalSettingsPath)
 
             log.info("Setting.json saved!")
         }
     }
 
-    override fun initViewElements() {
-        super.initViewElements()
+    override fun onReady() {
+        super.onReady()
         fire(ArgumentsRequest.GetActiveArguments())
     }
 
-    override fun setAvailableItems(items: GW2Arguments) {
+    override fun setAvailableItems(items: ArgumentsWrapper) {
 
         availableArgs = items.arguments.map { it.name to it }
-                .toMap().withDefault { GW2Argument()}
+                .toMap().withDefault { Argument() }
 
         availableArgs = ConcurrentHashMap(availableArgs)
 
@@ -93,7 +93,7 @@ class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2Lo
 
     }
 
-    override fun setActiveItems(items: GW2LocalSettings) {
+    override fun setActiveItems(items: LocalArguments) {
 
         if (availableArgs.isNotEmpty()) {
             items.arguments.map{
@@ -109,7 +109,7 @@ class ArgumentsController : ViewController(), ItemController<GW2Arguments, GW2Lo
                 }
             }
 
-            initViewElements()
+            onReady()
 
         }
 

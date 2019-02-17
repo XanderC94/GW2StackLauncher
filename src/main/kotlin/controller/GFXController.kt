@@ -2,7 +2,7 @@ package controller
 
 import events.GFXEvent
 import events.GFXRequest
-import model.objects.GW2GFXSettings
+import model.ontologies.gw2.GW2GFXSettings
 
 class GFXController : ViewController() {
 
@@ -16,15 +16,14 @@ class GFXController : ViewController() {
         }
     }
 
-    override fun initViewElements() {
-        super.initViewElements()
+    override fun onReady() {
+        super.onReady()
         fire(GFXRequest.UpdateInstallLocation())
     }
 
     fun setGFXSettings(gfx: GW2GFXSettings) {
         this.gfx = gfx
-
-        initViewElements()
+        onReady()
     }
 
 }
