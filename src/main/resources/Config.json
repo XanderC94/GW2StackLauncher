@@ -2,6 +2,5 @@
   "argumentListLocation":"https://raw.githubusercontent.com/XanderC94/GW2SLResources/master/Arguments.json",
   "addOnListLocation":"https://raw.githubusercontent.com/XanderC94/GW2SLResources/master/AddOns.json",
   "userAgent": "Mozilla/5.0 (Linux; Android 8.0.0; ONEPLUS A3003 Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.99 Mobile Safari/537.36",
-  "mainStyle": "/view/GW2SLMainView.xml",
-  "searchStyle": "/view/GW2SLSearch.xml"
+  "mainStyle": "/style/GW2StackLauncherStyle.css"
 }

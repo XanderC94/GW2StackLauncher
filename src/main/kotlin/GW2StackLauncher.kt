@@ -1,8 +1,8 @@
 import controller.AppController
+import extentions.*
+import model.ontologies.GW2SLConfig
 import model.utils.Nomenclatures
 import model.utils.SystemUtils
-import model.utils.asFile
-import model.utils.isDir
 import tornadofx.*
 import view.GW2SLMainView
 
@@ -10,17 +10,25 @@ class GW2StackLauncher: App(GW2SLMainView::class) {
 
     private lateinit var appController : AppController
 
-    init {
-        importStylesheet("${Nomenclatures.Directory.style}/${Nomenclatures.File.GW2SLStyle}")
-    }
-
     override fun init() {
 
         super.init()
 
+        val appConfig : GW2SLConfig = if (
+                parameters.named.isNotEmpty() &&
+                parameters.named.containsKey("config-path") &&
+                parameters.named["config-path"]!!.isFile()) {
+
+            parameters.named["config-path"]!!.asFile().readText().fromJson()
+        } else {
+            this.getResourceAsText("/${Nomenclatures.File.GW2SLConfigJson}").fromJson()
+        }
+
+        importStylesheet(appConfig.mainStyle)
+
         createAppEnvironment()
 
-        appController = AppController(parameters.named)
+        appController = AppController(appConfig)
 
     }
 

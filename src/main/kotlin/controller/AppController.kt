@@ -19,7 +19,7 @@ import kotlin.system.exitProcess
 // --config-path="D:\Xander\Documenti\Projects\GW2StackLauncher\res\Config.json"
 // https://raw.githubusercontent.com/XanderC94/GW2SLResources/master/Arguments.json
 // https://raw.githubusercontent.com/XanderC94/GW2SLResources/master/AddOns.json
-class AppController(val parameters: Map<String, String>) : Controller() {
+class AppController(private val appConfig: GW2SLConfig) : Controller() {
 
     private val argsController = ArgumentsController()
     private val valuesController = ValuesController()
@@ -82,16 +82,6 @@ class AppController(val parameters: Map<String, String>) : Controller() {
     }
 
     private fun loadAppConfig() : Pair<ArgumentsWrapper, AddOnsWrapper> {
-
-        val appConfig : GW2SLConfig = if (
-                parameters.isNotEmpty() &&
-                parameters.containsKey("config-path") &&
-                parameters["config-path"]!!.isFile()) {
-
-            parameters["config-path"]!!.asFile().readText().fromJson()
-        } else {
-            this.getResourceAsText("/${File.GW2SLConfigJson}").fromJson()
-        }
 
         val args = runAsync {
             val argsSrc = Source(SourceType.Arguments, appConfig.argumentListLocation)
